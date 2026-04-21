@@ -1,244 +1,1367 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quantum Pixel | Digital Artisan Studio</title>
-    <!-- Tailwind & Google Fonts -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Noto+Serif+Bengali:wght@400..800&family=Noto+Serif+Devanagari:wght@400..700&family=Space+Grotesk:wght@400..700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        :root { --c-bg: #F5F2EB; --c-ink: #1A1816; --c-red: #B93B2B; --c-gold: #E2A624; --c-blue: #163240; }
-        body { background-color: var(--c-bg); color: var(--c-ink); font-family: 'Lora', serif; margin: 0; overflow-x: hidden; }
-        .font-bn { font-family: 'Noto Serif Bengali', serif; }
-        .font-hi { font-family: 'Noto Serif Devanagari', serif; }
-        .font-tech { font-family: 'Space Grotesk', sans-serif; }
-        .shadow-h { box-shadow: 6px 6px 0px var(--c-ink); }
-        .shadow-gold { box-shadow: 6px 6px 0px var(--c-gold); }
-        .shadow-doubled { box-shadow: 6px 6px 0px var(--c-gold), 6px 6px 0px 1.5px var(--c-ink); }
-        @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-        .animate-marquee { display: flex; animation: scroll 40s linear infinite; }
-        #sidebar { transform: translateX(-100%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1); }
-        #sidebar.open { transform: translateX(0); }
-        
-        /* THE MAGIC LANGUAGE SWITCHER */
-        [data-lang] { display: none; }
-        body.lang-en [data-lang="en"] { display: block; }
-        body.lang-en span[data-lang="en"], body.lang-en div[data-lang="en"] { display: inline-block; }
-        body.lang-bn [data-lang="bn"] { display: block; }
-        body.lang-bn span[data-lang="bn"], body.lang-bn div[data-lang="bn"] { display: inline-block; }
-        body.lang-hi [data-lang="hi"] { display: block; }
-        body.lang-hi span[data-lang="hi"], body.lang-hi div[data-lang="hi"] { display: inline-block; }
-    </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>কোয়ান্টাম Pixel | The Bengal Digital Forge</title>
+
+<!-- Fonts: Lora (English Serif), Space Grotesk (Code/Tech), Noto Serif Bengali, Noto Serif Devanagari -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Noto+Serif+Bengali:wght@400;500;600;700;800&family=Noto+Serif+Devanagari:wght@400;500;600;700&family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+/* ── KOLKATA HERITAGE & TECH VARIABLES ── */
+:root {
+  /* Warm vintage paper canvas representing history and art */
+  --bg-canvas: #F5F2EB;      
+  
+  /* Kalighat Black for striking text */
+  --ink-black: #1A1816;      
+  
+  /* Terracotta Red (Bishnupur Temples / Alta) */
+  --terracotta-red: #B93B2B;  
+  
+  /* Yellow Taxi Mustard / Marigold */
+  --taxi-mustard: #E2A624;   
+  
+  /* Hooghly River Deep Indigo */
+  --river-indigo: #163240;    
+  
+  --border-thick: 2px solid var(--ink-black);
+  --border-thin: 1px solid var(--ink-black);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-canvas);
+  color: var(--ink-black);
+  font-family: 'Lora', serif;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* Subtle handloom / cloth texture overlay */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  opacity: 0.25;
+  pointer-events: none;
+  z-index: 999;
+  background-image: url("data:image/svg+xml,%3Csvg width='4' height='4' viewBox='0 0 4 4' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 3h1v1H1V3zm2-2h1v1H3V1z' fill='%231A1816' fill-opacity='0.2' fill-rule='evenodd'/%3E%3C/svg%3E");
+}
+
+/* Custom Selection */
+::selection { background: var(--terracotta-red); color: var(--bg-canvas); }
+
+/* ── LANGUAGE LOGIC ── */
+.lang-hi, .lang-en { display: none; }
+body.lang-bn-active .lang-hi, body.lang-bn-active .lang-en { display: none; }
+body.lang-bn-active .lang-bn { display: block; animation: stampedFade 0.4s ease; }
+body.lang-hi-active .lang-bn, body.lang-hi-active .lang-en { display: none; }
+body.lang-hi-active .lang-hi { display: block; animation: stampedFade 0.4s ease; }
+body.lang-en-active .lang-bn, body.lang-en-active .lang-hi { display: none; }
+body.lang-en-active .lang-en { display: block; animation: stampedFade 0.4s ease; }
+
+span.lang-bn, span.lang-hi, span.lang-en { display: inline; }
+body.lang-bn-active span.lang-bn { display: inline; }
+body.lang-hi-active span.lang-hi { display: inline; }
+body.lang-en-active span.lang-en { display: inline; }
+
+@keyframes stampedFade {
+  0% { opacity: 0; transform: scale(0.95); filter: grayscale(1); }
+  100% { opacity: 1; transform: scale(1); filter: grayscale(0); }
+}
+
+.bn-text { font-family: 'Noto Serif Bengali', serif; }
+.hi-text { font-family: 'Noto Serif Devanagari', serif; }
+.en-text { font-family: 'Lora', serif; }
+.tech-text { font-family: 'Space Grotesk', sans-serif; }
+
+/* ── LAYOUT FOUNDATION ── */
+.boundary-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  border-left: var(--border-thick);
+  border-right: var(--border-thick);
+  background-color: var(--bg-canvas);
+  position: relative;
+  z-index: 10;
+}
+
+/* Watermark */
+.bengal-watermark {
+  position: fixed;
+  top: 50%;
+  left: -5vw;
+  transform: translateY(-50%) rotate(-90deg);
+  font-family: 'Noto Serif Bengali', serif;
+  font-size: 15vw;
+  font-weight: 800;
+  color: var(--ink-black);
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 0;
+  white-space: nowrap;
+}
+
+/* ── NAVIGATION ── */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  border-bottom: var(--border-thick);
+  position: sticky;
+  top: 0;
+  background-color: var(--bg-canvas);
+  z-index: 100;
+  gap: 12px;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  /* Allow nav-left to shrink so lang-ticket never gets pushed off */
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.hamburger-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 5px;
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+
+.hamburger-btn:hover {
+  transform: scale(1.1);
+}
+
+.hamburger-line {
+  width: 25px;
+  height: 3px;
+  background-color: var(--ink-black);
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+
+/* Offcanvas Menu */
+.offcanvas-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(14, 18, 14, 0.6);
+  z-index: 99;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.offcanvas-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.offcanvas-menu {
+  position: fixed;
+  top: 0;
+  left: -350px;
+  width: 320px;
+  height: 100vh;
+  overflow-y: auto;
+  background-color: var(--bg-canvas);
+  border-right: var(--border-thick);
+  z-index: 100;
+  padding: 40px;
+  transition: left 0.4s cubic-bezier(0.175, 0.885, 0.32, 1);
+  box-shadow: 10px 0 0 var(--taxi-mustard);
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.offcanvas-menu.active {
+  left: 0;
+}
+
+.offcanvas-close {
+  align-self: flex-end;
+  background: transparent;
+  border: none;
+  font-size: 30px;
+  cursor: pointer;
+  color: var(--ink-black);
+  transition: color 0.2s;
+}
+.offcanvas-close:hover {
+  color: var(--terracotta-red);
+}
+
+.offcanvas-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  margin-top: 20px;
+}
+
+.offcanvas-link {
+  text-decoration: none;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--river-indigo);
+  transition: color 0.2s, transform 0.2s;
+}
+
+.offcanvas-link:hover {
+  color: var(--terracotta-red);
+  transform: translateX(10px);
+}
+
+.logo {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink-black);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  /* Allow logo to shrink if needed */
+  min-width: 0;
+  flex-shrink: 1;
+}
+
+/* Logo text truncation on very small screens */
+.logo span.bn-text,
+.logo span.hi-text,
+.logo span.en-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nav-msme-tag {
+  display: none !important;
+}
+
+.pixel-en {
+  color: var(--terracotta-red);
+  font-family: 'Space Grotesk', sans-serif;
+  display: inline-block;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  flex-shrink: 0;
+}
+
+.logo:hover .pixel-en {
+  transform: translateY(-4px) scale(1.05) rotate(5deg);
+  color: var(--taxi-mustard);
+}
+
+/* Ticket-style Lang Toggle */
+.lang-ticket {
+  display: flex;
+  border: var(--border-thick);
+  background: var(--bg-canvas);
+  overflow: hidden;
+  box-shadow: 4px 4px 0px var(--taxi-mustard);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.lang-btn {
+  background: transparent;
+  border: none;
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink-black);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.lang-btn:first-child { border-right: var(--border-thick); }
+
+body.lang-bn-active .btn-bn,
+body.lang-hi-active .btn-hi,
+body.lang-en-active .btn-en {
+  background: var(--ink-black);
+  color: var(--bg-canvas);
+}
+
+/* ── HERO SECTION ── */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: var(--border-thick);
+}
+
+.hero-left {
+  padding: 80px 40px;
+  border-right: var(--border-thick);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.heritage-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 16px;
+  border: var(--border-thin);
+  border-radius: 100px;
+  width: fit-content;
+  margin-bottom: 40px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  background: rgba(226, 166, 36, 0.1);
+}
+
+.dot-red {
+  width: 8px; height: 8px; background: var(--terracotta-red); border-radius: 50%;
+}
+
+.hero-title {
+  font-size: clamp(3rem, 5vw, 4.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--river-indigo);
+  margin-bottom: 30px;
+}
+
+.hero-desc {
+  font-size: 1.25rem;
+  line-height: 1.7;
+  max-width: 500px;
+  margin-bottom: 50px;
+  color: #333;
+}
+
+.cta-button {
+  display: inline-block;
+  background-color: var(--terracotta-red);
+  color: var(--bg-canvas);
+  border: var(--border-thick);
+  padding: 16px 32px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  box-shadow: 6px 6px 0px var(--ink-black);
+  transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.cta-button:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 9px 9px 0px var(--ink-black);
+  background-color: #a03022;
+}
+
+.cta-button:active {
+  transform: translate(4px, 4px);
+  box-shadow: 2px 2px 0px var(--ink-black);
+}
+
+/* The Rajbari Arch (Right Side) */
+.hero-right {
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: radial-gradient(var(--terracotta-red) 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-position: center;
+}
+
+.rajbari-arch {
+  width: 100%;
+  max-width: 400px;
+  height: 550px;
+  background-color: var(--taxi-mustard);
+  border: var(--border-thick);
+  border-radius: 200px 200px 0 0;
+  box-shadow: 12px 12px 0px var(--ink-black);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s ease;
+}
+
+.rajbari-arch:hover {
+  transform: translateY(-5px);
+  box-shadow: 16px 16px 0px var(--ink-black);
+}
+
+.alpana-motif {
+  position: absolute;
+  top: 40px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 4px dashed var(--terracotta-red);
+  opacity: 0.5;
+  transition: all 0.4s ease;
+  animation: spinSlow 30s linear infinite;
+}
+
+.rajbari-arch:hover .alpana-motif {
+  animation: spinSlow 4s linear infinite;
+  border-color: var(--river-indigo);
+  opacity: 0.9;
+  transform: scale(1.1);
+}
+
+@keyframes spinSlow { 100% { transform: rotate(360deg); } }
+
+.arch-text {
+  position: relative;
+  z-index: 2;
+  color: var(--river-indigo);
+}
+
+.arch-headline {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.arch-sub {
+  font-family: 'Space Grotesk', sans-serif;
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  border-top: 2px solid var(--river-indigo);
+  padding-top: 10px;
+  margin-top: 20px;
+}
+
+/* ── MARQUEE ── */
+.marquee {
+  background: var(--ink-black);
+  color: var(--bg-canvas);
+  padding: 20px 0;
+  overflow: hidden;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  border-bottom: var(--border-thick);
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.marquee-content {
+  display: inline-flex;
+  gap: 30px;
+  font-size: 18px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  animation: scrollText 20s linear infinite;
+}
+
+.marquee-content span.bullet { color: var(--taxi-mustard); }
+
+@keyframes scrollText { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ── SERVICES BUREAU ── */
+.services-bureau {
+  padding: 80px 40px;
+}
+
+.bureau-header {
+  margin-bottom: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.bureau-title {
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  font-weight: 700;
+  color: var(--river-indigo);
+}
+
+.bureau-tag {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14px;
+  text-transform: uppercase;
+  border: var(--border-thin);
+  padding: 8px 16px;
+  border-radius: 100px;
+}
+
+.matchbox-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.matchbox {
+  border: var(--border-thick);
+  background: var(--bg-canvas);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 6px 6px 0px var(--ink-black);
+}
+
+.matchbox:hover {
+  transform: translate(-4px, -4px);
+  box-shadow: 10px 10px 0px var(--terracotta-red);
+}
+
+.mb-top {
+  padding: 30px;
+  border-bottom: var(--border-thick);
+  background: var(--bg-canvas);
+  flex-grow: 1;
+}
+
+.mb-icon {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  color: var(--terracotta-red);
+  display: inline-block;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.matchbox:hover .mb-icon {
+  transform: scale(1.2) rotate(10deg);
+  color: var(--ink-black);
+}
+
+.mb-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  color: var(--river-indigo);
+}
+
+.mb-desc {
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.mb-bottom {
+  padding: 15px 30px;
+  background: var(--taxi-mustard);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: flex;
+  justify-content: space-between;
+  color: var(--ink-black);
+}
+
+/* ── PROCESS SECTION ── */
+.process-section {
+  padding: 80px 40px;
+  border-top: var(--border-thick);
+  background-color: var(--bg-canvas);
+}
+.process-header { text-align: center; margin-bottom: 60px; }
+.process-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 700; color: var(--river-indigo); }
+.process-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; }
+.process-step { position: relative; padding: 40px; border: var(--border-thick); background: #FFFBF0; box-shadow: 6px 6px 0px var(--taxi-mustard); transition: transform 0.2s, box-shadow 0.2s; }
+.process-step:hover { transform: translateY(-5px); box-shadow: 8px 10px 0px var(--terracotta-red); }
+
+.step-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.step-number { font-family: 'Space Grotesk', sans-serif; font-size: 3rem; font-weight: 700; color: var(--terracotta-red); line-height: 1; opacity: 0.8; }
+.step-icon {
+  width: 42px;
+  height: 42px;
+  color: var(--river-indigo);
+}
+
+.step-title { font-size: 1.5rem; font-weight: 700; color: var(--river-indigo); margin-bottom: 15px; }
+.step-desc { font-size: 1.1rem; color: #444; }
+
+/* ── TECH ARSENAL ── */
+.tech-section {
+  padding: 80px 40px;
+  border-top: var(--border-thick);
+  background-color: var(--river-indigo);
+  color: var(--bg-canvas);
+  text-align: center;
+}
+.tech-title { font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 700; color: var(--taxi-mustard); margin-bottom: 50px; }
+.tech-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; max-width: 900px; margin: 0 auto; }
+.tech-tag {
+  padding: 12px 24px;
+  border: 2px dashed var(--taxi-mustard);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--bg-canvas);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: default;
+}
+.tech-tag:hover {
+  background-color: var(--taxi-mustard);
+  color: var(--ink-black);
+  transform: scale(1.1) rotate(2deg);
+  border-style: solid;
+}
+
+/* ── PHILOSOPHY / ABOUT ── */
+.philosophy-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: var(--border-thick);
+}
+
+.phil-left {
+  padding: 80px 40px;
+  background: var(--taxi-mustard);
+  border-right: var(--border-thick);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.phil-quote {
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-weight: 700;
+  color: var(--river-indigo);
+  line-height: 1.2;
+}
+
+.phil-quote-mark {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 5rem;
+  color: var(--terracotta-red);
+  line-height: 0;
+  margin-bottom: 30px;
+  display: inline-block;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.phil-left:hover .phil-quote-mark {
+  transform: translateY(-8px) rotate(-15deg) scale(1.1);
+  color: #fff;
+}
+
+.phil-right {
+  padding: 80px 40px;
+  background: var(--river-indigo);
+  color: var(--bg-canvas);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.phil-title {
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  color: var(--taxi-mustard);
+}
+
+.phil-text {
+  font-size: 1.25rem;
+  line-height: 1.9;
+  opacity: 0.95;
+}
+
+/* ── TRUST SECTION ── */
+.trust-section {
+  padding: 80px 40px;
+  border-top: var(--border-thick);
+  background: #FFFBF0;
+}
+
+.trust-title {
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  font-weight: 700;
+  color: var(--river-indigo);
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+.trust-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.trust-card {
+  border: var(--border-thick);
+  padding: 30px;
+  background: var(--bg-canvas);
+  box-shadow: 6px 6px 0px var(--taxi-mustard);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.trust-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 8px 10px 0px var(--terracotta-red);
+}
+
+.trust-card-icon {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--terracotta-red);
+  margin-bottom: 20px;
+  display: inline-block;
+  border-bottom: 3px solid var(--river-indigo);
+  padding-bottom: 5px;
+}
+
+.trust-card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--ink-black);
+}
+
+.trust-card-desc {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #444;
+}
+
+/* ── CONTACT DESK ── */
+.contact-section {
+  padding: 80px 40px;
+  border-top: var(--border-thick);
+  background: var(--bg-canvas);
+}
+
+.contact-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.contact-title {
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  font-weight: 700;
+  color: var(--river-indigo);
+  margin-bottom: 15px;
+}
+
+.contact-subtitle {
+  font-size: 1.15rem;
+  color: #444;
+}
+
+.badges-container {
+  display: flex;
+  gap: 20px;
+  max-width: 700px;
+  margin: 0 auto 40px auto;
+  justify-content: center;
+}
+
+@media (max-width: 600px) {
+  .badges-container {
+    flex-direction: column;
+  }
+}
+
+.udyam-badge {
+  flex: 1;
+  border: var(--border-thick);
+  background: var(--bg-canvas);
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 15px;
+  text-align: left;
+  box-shadow: 6px 6px 0px var(--terracotta-red);
+  font-family: 'Space Grotesk', sans-serif;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.udyam-badge:hover {
+  transform: translateY(-3px);
+  box-shadow: 8px 8px 0px var(--terracotta-red);
+}
+
+.udyam-badge.gst {
+  box-shadow: 6px 6px 0px var(--river-indigo);
+}
+
+.udyam-badge.gst:hover {
+  box-shadow: 8px 8px 0px var(--river-indigo);
+}
+
+.udyam-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--river-indigo);
+  margin-bottom: 5px;
+}
+
+.udyam-number {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--ink-black);
+  letter-spacing: 0.05em;
+}
+
+.contact-form {
+  max-width: 700px;
+  margin: 0 auto;
+  border: var(--border-thick);
+  background: #FFFBF0;
+  padding: 40px;
+  box-shadow: 8px 8px 0px var(--taxi-mustard), 8px 8px 0px 2px var(--ink-black);
+}
+
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-label {
+  display: block;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+  color: var(--river-indigo);
+}
+
+.form-input, .form-textarea {
+  width: 100%;
+  padding: 15px;
+  background: transparent;
+  border: var(--border-thick);
+  font-family: 'Lora', serif;
+  font-size: 16px;
+  color: var(--ink-black);
+  outline: none;
+  transition: box-shadow 0.2s, background 0.2s, transform 0.2s;
+}
+
+.form-input:hover, .form-textarea:hover {
+  background: rgba(226, 166, 36, 0.05);
+}
+
+.form-input:focus, .form-textarea:focus {
+  background: var(--bg-canvas);
+  box-shadow: 4px 4px 0px var(--terracotta-red);
+  transform: translate(-2px, -2px);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.submit-btn {
+  width: 100%;
+  background: var(--terracotta-red);
+  color: var(--bg-canvas);
+  border: var(--border-thick);
+  padding: 18px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  box-shadow: 4px 4px 0px var(--ink-black);
+  transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.submit-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px var(--ink-black);
+  background-color: #a03022;
+}
+
+.submit-btn:active {
+  transform: translate(4px, 4px);
+  box-shadow: 0px 0px 0px var(--ink-black);
+}
+
+/* ── PORTFOLIO ── */
+.portfolio-section {
+  padding: 80px 40px;
+  background-color: var(--ink-black);
+  color: var(--bg-canvas);
+}
+
+.portfolio-header {
+  border-bottom: 2px solid var(--bg-canvas);
+  padding-bottom: 20px;
+  margin-bottom: 50px;
+}
+
+.portfolio-title {
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--taxi-mustard, #EAB308);
+}
+
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.portfolio-card {
+  border: 2px solid var(--bg-canvas);
+  background: var(--ink-black);
+  padding: 20px;
+  transition: transform 0.3s;
+}
+
+.portfolio-card:hover {
+  transform: translateY(-5px);
+  background: var(--bg-canvas);
+  color: var(--ink-black);
+}
+
+.portfolio-card:hover .port-title {
+  color: var(--ink-black);
+}
+
+.portfolio-card:hover .port-desc {
+  color: var(--ink-black);
+}
+
+.port-img-placeholder {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background-color: var(--river-indigo);
+  border: 2px solid var(--bg-canvas);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Space Grotesk', sans-serif;
+  color: var(--bg-canvas);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.portfolio-card:hover .port-img-placeholder {
+  border-color: var(--ink-black);
+}
+
+.port-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--bg-canvas);
+  margin-bottom: 10px;
+}
+
+.port-desc {
+  font-size: 1rem;
+  color: #ccc;
+  line-height: 1.5;
+}
+
+/* ── FAQ SECTION ── */
+.faq-section {
+  padding: 80px 40px;
+  background-color: var(--bg-canvas);
+  border-bottom: var(--border-thick);
+}
+
+.faq-header {
+  margin-bottom: 40px;
+}
+
+.faq-title {
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--ink-black);
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 800px;
+}
+
+details.faq-item {
+  border: var(--border-thick);
+  background: #FFFBF0;
+  padding: 20px;
+  border-radius: 0;
+  transition: all 0.2s;
+}
+
+details.faq-item[open] {
+  background: var(--taxi-mustard);
+}
+
+summary.faq-q {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--ink-black);
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+summary.faq-q::-webkit-details-marker {
+  display: none;
+}
+
+summary.faq-q::after {
+  content: "+";
+  font-size: 1.5rem;
+  font-weight: 400;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+details.faq-item[open] summary.faq-q::after {
+  content: "−";
+}
+
+.faq-a {
+  margin-top: 15px;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  color: var(--ink-black);
+  border-top: 1px solid var(--ink-black);
+  padding-top: 15px;
+}
+
+/* ── WHATSAPP BUTTON ── */
+.whatsapp-float {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: #25D366;
+  color: white;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  box-shadow: 4px 4px 0px var(--ink-black);
+  border: 2px solid var(--ink-black);
+  z-index: 1000;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.whatsapp-float:hover {
+  transform: translateY(-4px);
+  box-shadow: 6px 6px 0px var(--ink-black);
+}
+
+.whatsapp-float svg {
+  width: 35px;
+  height: 35px;
+  fill: currentColor;
+}
+
+/* ── FOOTER ── */
+footer {
+  border-top: var(--border-thick);
+  padding: 60px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background-color: var(--river-indigo);
+  color: var(--bg-canvas);
+}
+
+.footer-logo {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.footer-copy {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.8;
+}
+
+/* ═══════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+   ═══════════════════════════════════════ */
+
+/* ── TABLET (≤ 900px) ── */
+@media (max-width: 900px) {
+  /* Hero */
+  .hero { grid-template-columns: 1fr; }
+  .hero-left { border-right: none; border-bottom: var(--border-thick); padding: 50px 20px; }
+  .hero-right { padding: 40px 20px; }
+
+  /* Services */
+  .matchbox-grid { grid-template-columns: 1fr; }
+  .bureau-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+  .services-bureau { padding: 50px 20px; }
+
+  /* Process */
+  .process-grid { grid-template-columns: 1fr; }
+  .process-section { padding: 50px 20px; }
+
+  /* Tech */
+  .tech-section { padding: 50px 20px; }
+
+  /* Philosophy */
+  .philosophy-section { grid-template-columns: 1fr; }
+  .phil-left { border-right: none; border-bottom: var(--border-thick); padding: 50px 20px; }
+  .phil-right { padding: 50px 20px; }
+
+  /* Contact & Trust */
+  .contact-section { padding: 50px 20px; }
+  .trust-section { padding: 50px 20px; }
+  .contact-form { padding: 25px; box-shadow: 4px 4px 0px var(--taxi-mustard), 4px 4px 0px 2px var(--ink-black); }
+
+  .nav-msme-tag { display: none; }
+}
+
+/* ── MOBILE (≤ 600px) ── */
+@media (max-width: 600px) {
+
+  /* ── NAV: clean single row on mobile ── */
+  nav {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto;
+    padding: 0 16px;
+    gap: 0;
+  }
+
+  .nav-left {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    padding: 12px 0;
+    align-items: center;
+    display: flex;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  /* Lang ticket sits right side */
+  .lang-ticket {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+    align-self: center;
+  }
+
+  /* Lang button padding tightened on mobile */
+  .lang-btn {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  /* ── Logo: stack onto two lines on mobile ── */
+  .logo {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    line-height: 1.1;
+    font-size: 20px;
+  }
+  /* "Pixel" word sits on its own line, inherits the red colour from .pixel-en */
+  .logo .pixel-en {
+    display: block;
+    font-size: 20px;
+  }
+
+  /* ── MSME badge: appears above .heritage-badge via sibling pseudo trick ──
+     Since we can't touch HTML, we inject it as ::before on .hero-left itself,
+     positioned as the first flex child above .heritage-badge               */
+  .hero-left {
+    position: relative;
+  }
+  .hero-left::before {
+    content: attr(data-msme-bn);
+    display: block;
+    font-family: 'Noto Serif Bengali', serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--terracotta-red);
+    background-color: #FFFBF0;
+    border: 1.5px solid var(--terracotta-red);
+    padding: 5px 12px;
+    width: fit-content;
+    margin-bottom: 14px;
+    letter-spacing: 0.02em;
+    order: -1;
+  }
+
+  /* We use a JS-driven data attribute for the 3-language text — see script below */
+
+  /* Hero */
+  .hero-left { padding: 40px 16px; }
+  .hero-right { padding: 30px 16px; }
+  .rajbari-arch { height: 420px; }
+  .arch-headline { font-size: 2.2rem; }
+
+  /* Sections */
+  .services-bureau { padding: 40px 16px; }
+  .process-section { padding: 40px 16px; }
+  .tech-section { padding: 40px 16px; }
+  .trust-section { padding: 40px 16px; }
+  .contact-section { padding: 40px 16px; }
+  .portfolio-section { padding: 40px 16px; }
+  .faq-section { padding: 40px 16px; }
+  footer { padding: 40px 16px; }
+
+  /* Portfolio grid single column */
+  .portfolio-grid { grid-template-columns: 1fr; }
+
+  /* FAQ */
+  .faq-title { font-size: 2rem; }
+  summary.faq-q { font-size: 1rem; }
+
+  /* Trust */
+  .trust-grid { grid-template-columns: 1fr; }
+
+  /* Process */
+  .process-step { padding: 25px; }
+
+  /* Tech tags smaller */
+  .tech-tag { font-size: 0.9rem; padding: 10px 16px; }
+
+  /* Offcanvas narrower */
+  .offcanvas-menu { width: 280px; padding: 25px; }
+
+  /* Whatsapp button */
+  .whatsapp-float { bottom: 20px; right: 16px; width: 52px; height: 52px; }
+  .whatsapp-float svg { width: 28px; height: 28px; }
+
+  /* Marquee smaller */
+  .marquee-content { font-size: 14px; }
+
+  /* Contact form */
+  .contact-form { padding: 20px 16px; }
+}
+
+/* ── EXTRA SMALL (≤ 380px) ── */
+@media (max-width: 380px) {
+  .logo { font-size: 16px; }
+  .lang-btn { padding: 7px 9px; font-size: 11px; }
+  .hero-title { font-size: 2.2rem; }
+  .mb-title { font-size: 1.8rem; }
+}
+</style>
 </head>
-<body class="lang-en selection:bg-[#B93B2B] selection:text-white">
+<body class="lang-bn-active">
 
-    <!-- Mobile Sidebar -->
-    <div id="overlay" onclick="toggleMenu(false)" class="fixed inset-0 bg-black/60 z-[60] opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-sm"></div>
-    <aside id="sidebar" class="fixed top-0 left-0 bottom-0 w-[85%] max-w-[320px] bg-[#F5F2EB] border-r-2 border-black z-[70] p-10 flex flex-col gap-10 shadow-[10px_0_0_var(--c-gold)]">
-        <button onclick="toggleMenu(false)" class="self-end"><i data-lucide="x" class="w-8 h-8"></i></button>
-        <div class="flex flex-col gap-6 text-2xl font-bold text-[#163240]">
-            <a href="#philosophy" onclick="toggleMenu(false)"><span data-lang="en">Philosophy</span><span data-lang="bn">দর্শন</span><span data-lang="hi">दर्शन</span></a>
-            <a href="#services" onclick="toggleMenu(false)"><span data-lang="en">Services</span><span data-lang="bn">পরিষেবাদি</span><span data-lang="hi">सेवाएं</span></a>
-            <a href="#portfolio" onclick="toggleMenu(false)"><span data-lang="en">Portfolio</span><span data-lang="bn">কাজ</span><span data-lang="hi">काम</span></a>
-            <a href="#process" onclick="toggleMenu(false)"><span data-lang="en">Process</span><span data-lang="bn">প্রণালী</span><span data-lang="hi">प्रक्रिया</span></a>
-            <a href="#contact" onclick="toggleMenu(false)"><span data-lang="en">Contact</span><span data-lang="bn">যোগাযোগ</span><span data-lang="hi">संपर्क</span></a>
-        </div>
-    </aside>
+  <!-- OFFCANVAS MENU -->
+  <div class="offcanvas-overlay" onclick="toggleMenu()"></div>
+  <div class="offcanvas-menu">
+    <button class="offcanvas-close" onclick="toggleMenu()">×</button>
+    <a href="#" class="logo" style="margin-bottom: 20px; border-bottom: 2px solid var(--ink-black); padding-bottom: 20px;">
+      <span class="lang-bn bn-text" style="font-weight: 800;">কোয়ান্টাম</span>
+      <span class="lang-hi hi-text" style="font-weight: 800;">क्वांटम</span>
+      <span class="lang-en en-text" style="font-weight: 800;">Quantum</span>
+      <span class="pixel-en">Pixel</span>
+    </a>
+    <div class="offcanvas-nav">
+      <a href="#about" class="offcanvas-link" onclick="toggleMenu()">
+        <span class="lang-bn bn-text">দর্শন</span>
+        <span class="lang-hi hi-text">दर्शन</span>
+        <span class="lang-en en-text">Philosophy</span>
+      </a>
+      <a href="#services" class="offcanvas-link" onclick="toggleMenu()">
+        <span class="lang-bn bn-text">পরিষেবাদি</span>
+        <span class="lang-hi hi-text">सेवाएं</span>
+        <span class="lang-en en-text">Services</span>
+      </a>
+      <a href="#portfolio" class="offcanvas-link" onclick="toggleMenu()">
+        <span class="lang-bn bn-text">নির্বাচিত কাজ</span>
+        <span class="lang-hi hi-text">चुनिंदा काम</span>
+        <span class="lang-en en-text">Selected Works</span>
+      </a>
+      <a href="#process" class="offcanvas-link" onclick="toggleMenu()">
+        <span class="lang-bn bn-text">আমাদের প্রক্রিয়া</span>
+        <span class="lang-hi hi-text">हमारी प्रक्रिया</span>
+        <span class="lang-en en-text">Process</span>
+      </a>
+      <a href="#tech" class="offcanvas-link" onclick="toggleMenu()">
+        <span class="lang-bn bn-text">প্রযুক্তি</span>
+        <span class="lang-hi hi-text">तकनीक</span>
+        <span class="lang-en en-text">Tech</span>
+      </a>
+      <a href="#trust" class="offcanvas-link" onclick="toggleMenu()">
+        <span class="lang-bn bn-text">কেন বিশ্বাস করবেন?</span>
+        <span class="lang-hi hi-text">हम पर भरोसा क्यों करें?</span>
+        <span class="lang-en en-text">Why Trust Us?</span>
+      </a>
+      <a href="#faq" class="offcanvas-link" onclick="toggleMenu()">
+        <span class="lang-bn bn-text">জিজ্ঞাস্য</span>
+        <span class="lang-hi hi-text">सामान्य प्रश्न</span>
+        <span class="lang-en en-text">FAQ</span>
+      </a>
+      <a href="#contact" class="offcanvas-link" onclick="toggleMenu()">
+        <span class="lang-bn bn-text">যোগাযোগ</span>
+        <span class="lang-hi hi-text">संपर्क</span>
+        <span class="lang-en en-text">Contact</span>
+      </a>
+    </div>
+  </div>
 
-    <div class="max-w-[1400px] mx-auto border-x-2 border-black bg-[#F5F2EB] relative z-10 min-h-screen">
-        
-        <!-- Navbar -->
-        <nav class="sticky top-0 z-50 flex items-center justify-between px-2 md:px-10 py-3 md:py-6 border-b-2 border-black bg-[#F5F2EB]/95 backdrop-blur-sm">
-            <div class="flex items-center gap-2 md:gap-4 shrink overflow-hidden">
-                <button onclick="toggleMenu(true)" class="p-1 shrink-0"><i data-lucide="menu" class="w-6 h-6 md:w-7 md:h-7"></i></button>
-                <div class="flex flex-col md:flex-row md:items-center gap-1 md:gap-3 truncate">
-                    <a href="#" class="text-base md:text-2xl font-bold flex gap-1 items-center shrink-0">
-                        <span data-lang="en">Quantum</span><span data-lang="bn" class="font-bn">কোয়ান্টাম</span><span data-lang="hi" class="font-hi">क्वांटम</span><span class="text-[#B93B2B] italic font-tech">Pixel</span>
-                    </a>
-                    <div class="bg-[#FFFBF0] border-[1.5px] border-[#B93B2B] px-1 md:px-2 py-0.5 text-[7px] md:text-xs font-tech font-bold text-[#B93B2B] uppercase truncate w-fit">
-                        <span data-lang="en">(A Govt. Registered MSME)</span>
-                        <span data-lang="bn">(সরকার নিবন্ধিত MSME)</span>
-                        <span data-lang="hi">(सरकार पंजीकृत MSME)</span>
-                    </div>
-                </div>
-            </div>
+<!-- WATERMARK -->
+<div class="bengal-watermark">কলকাতা</div>
 
-            <!-- Language buttons: Forced in one row with compact spacing -->
-            <div class="flex border-2 border-black bg-white shadow-[2px_2px_0_var(--c-gold)] shrink-0 ml-1">
-                <button onclick="setL('en')" id="b-en" class="px-1.5 md:px-4 py-1 text-[9px] md:text-sm font-bold border-r-2 border-black bg-black text-white">EN</button>
-                <button onclick="setL('bn')" id="b-bn" class="px-1.5 md:px-4 py-1 text-[9px] md:text-sm font-bold border-r-2 border-black">BN</button>
-                <button onclick="setL('hi')" id="b-hi" class="px-1.5 md:px-4 py-1 text-[9px] md:text-sm font-bold font-hi">HI</button>
-            </div>
-        </nav>
+<div class="boundary-container">
 
-        <main>
-            <!-- Hero -->
-            <section class="grid lg:grid-cols-2 border-b-2 border-black">
-                <div class="p-8 md:p-20 border-r-0 lg:border-r-2 border-black flex flex-col justify-center">
-                    <div class="px-3 py-1 border border-black/20 rounded-full bg-yellow-500/10 w-fit mb-6 text-[10px] font-bold font-tech uppercase tracking-widest">
-                        Made in Bengal ৾ Crafted for the World
-                    </div>
-                    <h1 class="text-4xl md:text-7xl font-bold leading-[1.1] text-[#163240] mb-8">
-                        <span data-lang="en">Digital Craft from Heritage Soil.</span>
-                        <span data-lang="bn" class="font-bn">ঐতিহ্যের মাটি থেকে ডিজিটাল শিল্প।</span>
-                        <span data-lang="hi" class="font-hi">विरासत की मिट्टी से डिजिटल कला।</span>
-                    </h1>
-                    <p class="text-lg md:text-xl opacity-80 mb-10 max-w-md font-serif">
-                        <span data-lang="en">A web engineering studio born from the artistic legacy of West Bengal. We reliably forge your business.</span>
-                        <span data-lang="bn">পশ্চিমবঙ্গের শিল্প ঐতিহ্যের বুক থেকে জন্ম নেওয়া এক ইঞ্জিনিয়ারিং স্টুডিও।</span>
-                        <span data-lang="hi">पश्चिम बंगाल की कलात्मक विरासत के बीच पैदा हुआ एक वेब इंजीनियरिंग स्टूडियो।</span>
-                    </p>
-                    <a href="#contact" class="w-fit bg-[#B93B2B] text-white border-2 border-black px-8 py-4 text-lg font-bold shadow-h hover:-translate-y-1 transition-all">
-                        <span data-lang="en">Start Building</span><span data-lang="bn">শুরু করুন</span><span data-lang="hi">शुरू करें</span>
-                    </a>
-                </div>
-                <div class="p-10 md:p-20 flex items-center justify-center bg-[radial-gradient(#B93B2B_1px,transparent_1px)] bg-[length:25px_25px]">
-                    <div class="w-full max-w-[320px] aspect-[4/5] bg-[#E2A624] border-2 border-black rounded-t-full shadow-h flex flex-col items-center justify-center p-10 text-center animate-pulse">
-                        <div class="text-5xl md:text-6xl font-black text-[#163240] uppercase">
-                            <span data-lang="en">Art</span><span data-lang="bn">শিল্প</span><span data-lang="hi">कला</span>
-                        </div>
-                        <div class="text-6xl text-[#B93B2B] font-bold -my-5">+</div>
-                        <div class="text-3xl md:text-5xl font-black text-[#163240] uppercase">
-                            <span data-lang="en">Tech</span><span data-lang="bn">প্রযুক্তি</span><span data-lang="hi">तकनीक</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
+  <!-- NAVIGATION -->
+  <nav>
+    <div class="nav-left">
+      <button class="hamburger-btn" onclick="toggleMenu()">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
 
-            <!-- Marquee -->
-            <div class="bg-black text-white py-6 overflow-hidden border-b-2 border-black">
-                <div class="animate-marquee gap-10 whitespace-nowrap">
-                    <div class="flex items-center gap-10 text-lg sm:text-xl font-tech font-bold uppercase">
-                        <span>Digital Renaissance of Bengal</span> <span class="text-[#E2A624]">✽</span>
-                        <span>Digital Renaissance of Bengal</span> <span class="text-[#E2A624]">✽</span>
-                    </div>
-                    <div class="flex items-center gap-10 text-lg sm:text-xl font-tech font-bold uppercase">
-                        <span>Digital Renaissance of Bengal</span> <span class="text-[#E2A624]">✽</span>
-                        <span>Digital Renaissance of Bengal</span> <span class="text-[#E2A624]">✽</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Philosophy -->
-            <section id="philosophy" class="grid lg:grid-cols-2 border-b-2 border-black overflow-hidden">
-                <div class="p-8 lg:p-20 bg-[#E2A624] border-r-0 lg:border-r-2 border-black flex flex-col justify-center">
-                    <span class="text-8xl text-[#B93B2B] font-tech leading-none -mb-6 block">❝</span>
-                    <h2 class="text-3xl md:text-5xl font-bold text-[#163240] leading-tight">
-                        <span data-lang="en">If technology is the canvas, design is our brushstroke.</span>
-                        <span data-lang="bn">প্রযুক্তি ক্যানভাস হলে, ডিজাইন হলো আমাদের তুলির আঁচড়।</span>
-                        <span data-lang="hi">तकनीक यदि कैनवास है, तो डिज़ाइन हमारे ब्रश का स्पर्श है।</span>
-                    </h2>
-                </div>
-                <div class="p-8 lg:p-20 bg-[#163240] text-white flex flex-col justify-center">
-                    <h3 class="text-3xl font-bold text-[#E2A624] mb-8 font-tech uppercase">
-                        <span data-lang="en">Philosophy</span><span data-lang="bn">দর্শন</span><span data-lang="hi">दर्शन</span>
-                    </h3>
-                    <p class="text-xl leading-relaxed opacity-90 font-serif italic">
-                        <span data-lang="en">Inspired by West Bengal's heritage, we manifest stories in the digital realm through deep artistic sensitivity.</span>
-                        <span data-lang="bn">বাংলার সাংস্কৃতিক ঐতিহ্য থেকে অনুপ্রেরণা নিয়ে আমরা হৃদয়স্পর্শী ওয়েবসাইট তৈরি করি।</span>
-                        <span data-lang="hi">पश्चिम बंगाल की सांस्कृतिक विरासत से प्रेरणा लेकर, हम ऐसी वेबसाइट बनाते हैं जो दिल छू ले।</span>
-                    </p>
-                </div>
-            </section>
-
-            <!-- Services -->
-            <section id="services" class="p-8 md:p-20 border-b-2 border-black">
-                <h2 class="text-4xl md:text-6xl font-black mb-16 text-[#163240]">
-                    <span data-lang="en">Our Craftsmanship</span><span data-lang="bn">আমাদের দক্ষতা</span><span data-lang="hi">हमारा शिल्प</span>
-                </h2>
-                <div class="grid md:grid-cols-3 gap-8">
-                    <div class="p-10 border-2 border-black bg-white shadow-h hover:shadow-red transition-all cursor-default">
-                        <h3 class="text-3xl font-bold mb-4 font-tech uppercase text-[#B93B2B]"><span data-lang="en">Design</span><span data-lang="bn">নকশা</span><span data-lang="hi">डिजाइन</span></h3>
-                        <p class="text-lg opacity-80">Aesthetic interfaces inspired by Bengal's beautiful craftsmanship.</p>
-                    </div>
-                    <div class="p-10 border-2 border-black bg-white shadow-h hover:shadow-red transition-all cursor-default">
-                        <h3 class="text-3xl font-bold mb-4 font-tech uppercase text-[#B93B2B]"><span data-lang="en">Core Dev</span><span data-lang="bn">প্রকৌশল</span><span data-lang="hi">तकनीक</span></h3>
-                        <p class="text-lg opacity-80">Infrastructure as robust as the historic Howrah Bridge.</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Process -->
-            <section id="process" class="p-8 md:p-20 bg-[#FFFBF0] border-b-2 border-black">
-                <h2 class="text-4xl font-bold text-center mb-16 uppercase font-tech">
-                    <span data-lang="en">The Crafting Process</span><span data-lang="bn">নির্মাণ প্রণালী</span><span data-lang="hi">निर्माण प्रक्रिया</span>
-                </h2>
-                <div class="grid sm:grid-cols-4 gap-8">
-                    <div class="p-8 border-2 border-black bg-white shadow-gold hover:-translate-y-2 transition-transform">
-                        <div class="text-4xl font-black text-[#B93B2B]/20 mb-6 font-tech">01</div>
-                        <h3 class="text-xl font-bold mb-2">Discovery</h3>
-                        <p class="text-sm opacity-60">Understanding your unique roots.</p>
-                    </div>
-                    <div class="p-8 border-2 border-black bg-white shadow-gold hover:-translate-y-2 transition-transform">
-                        <div class="text-4xl font-black text-[#B93B2B]/20 mb-6 font-tech">02</div>
-                        <h3 class="text-xl font-bold mb-2">Milestones</h3>
-                        <p class="text-sm opacity-60">Zero-risk payment workflow.</p>
-                    </div>
-                    <div class="p-8 border-2 border-black bg-white shadow-gold hover:-translate-y-2 transition-transform">
-                        <div class="text-4xl font-black text-[#B93B2B]/20 mb-6 font-tech">03</div>
-                        <h3 class="text-xl font-bold mb-2">Secure Dev</h3>
-                        <p class="text-sm opacity-60">SSL protected enterprise code.</p>
-                    </div>
-                    <div class="p-8 border-2 border-black bg-white shadow-gold hover:-translate-y-2 transition-transform">
-                        <div class="text-4xl font-black text-[#B93B2B]/20 mb-6 font-tech">04</div>
-                        <h3 class="text-xl font-bold mb-2">Launch</h3>
-                        <p class="text-sm opacity-60">100% ownership handed over.</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Contact -->
-            <section id="contact" class="p-8 md:p-24 bg-[#F5F2EB]">
-                <div class="text-center mb-16">
-                    <h2 class="text-4xl md:text-6xl font-black text-[#163240] mb-4">Connect With Us</h2>
-                    <p class="text-xl opacity-60">Send us a message to discuss your next project.</p>
-                </div>
-                <div class="flex flex-col md:flex-row gap-6 max-w-screen-md mx-auto mb-12">
-                    <div class="flex-1 p-6 border-2 border-black bg-white shadow-doubled flex items-center gap-4">
-                        <div><span class="block text-[10px] font-tech font-bold uppercase mb-1">MSME</span><span class="font-bold">UDYAM-WB-18-0186128</span></div>
-                    </div>
-                    <div class="flex-1 p-6 border-2 border-black bg-white shadow-h flex items-center gap-4">
-                        <div><span class="block text-[10px] font-tech font-bold uppercase mb-1">GSTIN</span><span class="font-bold">19BDYPL9210K1ZR</span></div>
-                    </div>
-                </div>
-                <form class="max-w-screen-md mx-auto p-10 border-2 border-black bg-[#FFFBF0] shadow-doubled">
-                    <div class="grid md:grid-cols-2 gap-8 mb-8">
-                        <div class="flex flex-col gap-2"><label class="font-tech text-xs font-bold uppercase text-[#163240]">Name</label><input type="text" class="bg-transparent border-2 border-black p-4 outline-none focus:bg-white focus:shadow-h transition-all" /></div>
-                        <div class="flex flex-col gap-2"><label class="font-tech text-xs font-bold uppercase text-[#163240]">Email</label><input type="email" class="bg-transparent border-2 border-black p-4 outline-none focus:bg-white focus:shadow-h transition-all" /></div>
-                    </div>
-                    <textarea rows="5" class="w-full mb-8 bg-transparent border-2 border-black p-4 outline-none focus:bg-white focus:shadow-h transition-all" placeholder="Tell us about your project..."></textarea>
-                    <button class="w-full bg-[#B93B2B] text-white border-2 border-black p-6 font-bold uppercase shadow-h hover:-translate-y-1 active:translate-y-px transition-all">Send Message ➔</button>
-                </form>
-            </section>
-        </main>
-
-        <footer class="py-12 bg-[#163240] text-white text-center border-t-2 border-black">
-            <div class="text-3xl font-bold mb-2">Quantum Pixel</div>
-            <p class="text-[10px] opacity-40 tracking-widest">© 2026 THE DIGITAL ARTISANS OF BENGAL</p>
-        </footer>
-    </div>
-
-    <!-- WhatsApp Float -->
-    <a href="https://wa.me/911234567890" target="_blank" class="fixed bottom-8 right-8 w-14 h-14 bg-[#25D366] text-white rounded-full flex items-center justify-center border-2 border-black shadow-h z-[100] hover:-translate-y-2 transition-all">
-        <i data-lucide="message-circle" class="w-8 h-8"></i>
-    </a>
-
-    <script>
-        function toggleMenu(s) {
-            document.getElementById('sidebar').classList.toggle('open', s);
-            document.getElementById('overlay').classList.toggle('opacity-100', s);
-            document.getElementById('overlay').classList.toggle('pointer-events-auto', s);
-        }
-        function setL(l) {
-            document.body.className = 'lang-' + l + ' ' + (l==='bn'?'font-bn':l==='hi'?'font-hi':'font-serif');
-            ['en','bn','hi'].forEach(x => {
-                const b = document.getElementById('b-'+x);
-                b.className = `px-1.5 md:px-4 py-1 text-[9px] md:text-sm font-bold border-r-2 last:border-r-0 border-black ${x===l?'bg-black text-white':'bg-white text-black'}`;
-            });
-        }
-        lucide.createIcons();
-    </script>
-</body>
-</html>
+      <a href="#" class="logo">
+        <span class="lang-bn bn-text" style="font-weight: 800;">কোয়ান্টাম</span>
+        <span class="lang-hi hi-text" style="font-weight: 800;">क्वांटम</span>
+        <span class="lang-en en-text" style="font-weight: 800;">Quantum</span>
+        <span class="pi
