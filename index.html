@@ -11,10 +11,10 @@
 <script src="https://unpkg.com/lucide@latest"></script>
 
 <style>
-:root { --bg-canvas: #F5F2EB; --ink-black: #1A1816; --terracotta: #B93B2B; --taxi-mustard: #E2A624; --river-indigo: #163240; }
-body { background-color: var(--bg-canvas); color: var(--ink-black); font-family: 'Lora', serif; overflow-x: hidden; margin: 0; }
+:root { --bg: #F5F2EB; --ink: #1A1816; --red: #B93B2B; --gold: #E2A624; --blue: #163240; }
+body { background-color: var(--bg); color: var(--ink); font-family: 'Lora', serif; overflow-x: hidden; margin: 0; }
 
-/* Language Logic */
+/* Language Switcher Logic */
 [data-lang] { display: none; }
 body.lang-bn [data-lang="bn"] { display: block; }
 body.lang-bn span[data-lang="bn"], body.lang-bn div[data-lang="bn"] { display: inline-block; }
@@ -26,72 +26,72 @@ body.lang-en span[data-lang="en"], body.lang-en div[data-lang="en"] { display: i
 .font-bn { font-family: 'Noto Serif Bengali', serif; }
 .font-hi { font-family: 'Noto Serif Devanagari', serif; }
 .font-tech { font-family: 'Space Grotesk', sans-serif; }
-.shadow-heritage { box-shadow: 6px 6px 0px var(--ink-black); }
-.shadow-mustard { box-shadow: 6px 6px 0px var(--taxi-mustard); }
+
+.shadow-h { box-shadow: 6px 6px 0px var(--ink); }
+.shadow-g { box-shadow: 6px 6px 0px var(--gold); }
+.shadow-r { box-shadow: 6px 6px 0px var(--red); }
+
+@keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.animate-marquee { display: flex; animation: scroll 30s linear infinite; }
+
 #sidebar { transform: translateX(-100%); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1); }
 #sidebar.open { transform: translateX(0); }
-@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-.animate-marquee { display: flex; animation: marquee 30s linear infinite; }
 </style>
 </head>
 <body class="lang-bn selection:bg-[#B93B2B] selection:text-white">
 
   <!-- Mobile Sidebar -->
   <div id="overlay" onclick="toggleMenu(false)" class="fixed inset-0 bg-black/60 z-[90] opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-sm"></div>
-  <aside id="sidebar" class="fixed top-0 left-0 bottom-0 w-[80%] max-w-[320px] bg-[#F5F2EB] border-r-2 border-[#1A1816] z-[100] p-10 flex flex-col gap-10 shadow-[10px_0_0_#E2A624]">
+  <aside id="sidebar" class="fixed top-0 left-0 bottom-0 w-[80%] max-w-[320px] bg-[#F5F2EB] border-r-2 border-black z-[100] p-10 flex flex-col gap-10 shadow-[10px_0_0_var(--gold)]">
     <button onclick="toggleMenu(false)" class="self-end"><i data-lucide="x" class="w-8 h-8"></i></button>
     <nav class="flex flex-col gap-6 text-2xl font-bold text-[#163240]">
-      <a href="#about" onclick="toggleMenu(false)"><span data-lang="bn">দর্শন</span><span data-lang="hi">दर्शन</span><span data-lang="en">Philosophy</span></a>
-      <a href="#services" onclick="toggleMenu(false)"><span data-lang="bn">পরিষেবাদি</span><span data-lang="hi">सेवाएं</span><span data-lang="en">Services</span></a>
-      <a href="#portfolio" onclick="toggleMenu(false)"><span data-lang="bn">নির্ভাচিত কাজ</span><span data-lang="hi">चुनिंदा काम</span><span data-lang="en">Portfolio</span></a>
-      <a href="#process" onclick="toggleMenu(false)"><span data-lang="bn">নির্মাণ প্রণালী</span><span data-lang="hi">निर्माण प्रक्रिया</span><span data-lang="en">Process</span></a>
-      <a href="#contact" onclick="toggleMenu(false)" class="text-[#B93B2B]"><span data-lang="bn">যোগাযোগ</span><span data-lang="hi">संपर्क</span><span data-lang="en">Contact</span></a>
+        <a href="#philosophy" onclick="toggleMenu(false)"><span data-lang="bn">দর্শন</span><span data-lang="hi">दर्शन</span><span data-lang="en">Philosophy</span></a>
+        <a href="#services" onclick="toggleMenu(false)"><span data-lang="bn">পরিষেবাদি</span><span data-lang="hi">सेवाएं</span><span data-lang="en">Services</span></a>
+        <a href="#portfolio" onclick="toggleMenu(false)"><span data-lang="bn">নির্বাচিত কাজ</span><span data-lang="hi">काम</span><span data-lang="en">Portfolio</span></a>
+        <a href="#process" onclick="toggleMenu(false)"><span data-lang="bn">নির্মাণ প্রণালী</span><span data-lang="hi">प्रक्रिया</span><span data-lang="en">Process</span></a>
+        <a href="#contact" onclick="toggleMenu(false)" class="text-[#B93B2B] border-t-2 border-black pt-6"><span data-lang="bn">যোগাযোগ</span><span data-lang="hi">संपर्क</span><span data-lang="en">Contact</span></a>
     </nav>
   </aside>
 
-  <div class="max-w-[1400px] mx-auto border-x-2 border-[#1A1816] bg-[#F5F2EB] relative z-10 min-h-screen">
+  <div class="max-w-[1400px] mx-auto border-x-2 border-black bg-[#F5F2EB] relative z-10 min-h-screen">
     
-    <!-- NAVIGATION -->
-    <nav class="sticky top-0 z-50 flex items-center justify-between px-2 md:px-10 py-3 md:py-6 border-b-2 border-[#1A1816] bg-[#F5F2EB]/95 backdrop-blur-sm">
+    <!-- NAVIGATION (OVERLAP FIX) -->
+    <nav class="sticky top-0 z-50 flex items-center justify-between px-2 md:px-10 py-3 md:py-6 border-b-2 border-black bg-[#F5F2EB]/95 backdrop-blur-sm">
       <div class="flex items-center gap-2 md:gap-4 shrink overflow-hidden">
         <button onclick="toggleMenu(true)" class="p-1 shrink-0"><i data-lucide="menu" class="w-6 h-6 md:w-7 md:h-7"></i></button>
-        <div class="flex flex-col md:flex-row md:items-center gap-0.5 md:gap-3 truncate">
+        <div class="flex flex-col md:flex-row md:items-center gap-1 md:gap-3 truncate">
           <a href="#" class="text-base md:text-2xl font-bold flex gap-1 items-center shrink-0">
             <span data-lang="bn" class="font-bn">কোয়ান্টাম</span><span data-lang="hi" class="font-hi">क्वांटम</span><span data-lang="en">Quantum</span><span class="text-[#B93B2B] italic font-tech">Pixel</span>
           </a>
-          <div class="bg-[#FFFBF0] border-[1.5px] border-[#B93B2B] px-1 md:px-3 py-0.5 text-[7px] md:text-xs font-tech font-bold text-[#B93B2B] uppercase truncate w-fit">
+          <div class="bg-[#FFFBF0] border-[1.5px] border-[#B93B2B] px-1 md:px-2 py-0.5 text-[7px] md:text-xs font-tech font-bold text-[#B93B2B] uppercase truncate w-fit">
             <span data-lang="bn">(সরকার নিবন্ধিত MSME)</span><span data-lang="hi">(सरकार पंजीकृत MSME)</span><span data-lang="en">(A Govt. Registered MSME)</span>
           </div>
         </div>
       </div>
-      <div class="flex border-2 border-[#1A1816] bg-white shadow-[2px_2px_0_var(--taxi-mustard)] shrink-0 ml-1">
-        <button onclick="setL('bn')" id="b-bn" class="px-1.5 md:px-4 py-1 text-[9px] md:text-sm font-bold border-r-2 border-[#1A1816] bg-black text-white">BN</button>
-        <button onclick="setL('hi')" id="b-hi" class="px-1.5 md:px-4 py-1 text-[9px] md:text-sm font-bold border-r-2 border-[#1A1816]">HI</button>
+      <div class="flex border-2 border-black bg-white shadow-[2px_2px_0_var(--gold)] shrink-0 ml-1">
+        <button onclick="setL('bn')" id="b-bn" class="px-1.5 md:px-4 py-1 text-[9px] md:text-sm font-bold border-r-2 border-black bg-black text-white">BN</button>
+        <button onclick="setL('hi')" id="b-hi" class="px-1.5 md:px-4 py-1 text-[9px] md:text-sm font-bold border-r-2 border-black">HI</button>
         <button onclick="setL('en')" id="b-en" class="px-1.5 md:px-4 py-1 text-[9px] md:text-sm font-bold">EN</button>
       </div>
     </nav>
 
     <main>
-      <!-- HERO -->
-      <header class="grid lg:grid-cols-2 border-b-2 border-black">
+      <!-- HERO (CIRCLE REMOVED) -->
+      <section class="grid lg:grid-cols-2 border-b-2 border-black overflow-hidden">
         <div class="p-8 md:p-20 border-r-0 lg:border-r-2 border-black flex flex-col justify-center">
-            <div class="px-3 py-1 border border-black/20 rounded-full bg-yellow-500/10 w-fit mb-8 text-[10px] font-bold font-tech uppercase tracking-widest">Made in Bengal ৾ Crafted for the World</div>
+            <div class="px-3 py-1 border border-black/20 rounded-full bg-yellow-500/10 w-fit mb-6 text-[10px] font-bold font-tech uppercase tracking-widest">Made in Bengal ৾ Crafted for the World</div>
             <h1 class="text-4xl md:text-7xl font-bold leading-[1.1] text-[#163240] mb-8">
-              <span data-lang="bn" class="font-bn">ঐতিহ্যের মাটি থেকে ডিজিটাল শিল্প।</span>
-              <span data-lang="hi" class="font-hi">विरासत की मिट्टी से डिजिटल कला।</span>
-              <span data-lang="en">Digital Craft from Heritage Soil.</span>
+              <span data-lang="bn" class="font-bn">ঐতিহ্যের মাটি থেকে ডিজিটাল শিল্প।</span><span data-lang="hi" class="font-hi">विरासत की मिट्टी से डिजिटल कला।</span><span data-lang="en">Digital Craft from Heritage Soil.</span>
             </h1>
             <p class="text-lg opacity-80 mb-10 max-w-md">
-              <span data-lang="bn">পশ্চিমবঙ্গের শিল্প ঐতিহ্যের বুক থেকে জন্ম নেওয়া এক ইঞ্জিনিয়ারিং স্টুডিও।</span>
-              <span data-lang="en">A web engineering studio born from the legacy of West Bengal.</span>
+              <span data-lang="bn">পশ্চিমবঙ্গের শিল্প ঐতিহ্যের বুক থেকে জন্ম নেওয়া এক ইঞ্জিনিয়ারিং স্টুডিও।</span><span data-lang="en">A web engineering studio born from the artistic legacy of West Bengal.</span>
             </p>
-            <a href="#contact" class="w-fit bg-[#B93B2B] text-white border-2 border-black px-8 py-4 font-bold shadow-heritage transition-all hover:translate-x-1">
-                <span data-lang="bn">শুরু করুন</span><span data-lang="hi">शुरू करें</span><span data-lang="en">Start Building</span>
+            <a href="#contact" class="w-fit bg-[#B93B2B] text-white border-2 border-black px-8 py-4 font-bold shadow-h hover:-translate-y-1 transition-all">
+                <span data-lang="en">Start Building</span><span data-lang="bn">শুরু করুন</span><span data-lang="hi">शुरू करें</span>
             </a>
         </div>
         <div class="p-10 md:p-20 flex items-center justify-center bg-[radial-gradient(#B93B2B_1px,transparent_1px)] bg-[length:25px_25px]">
-          <div class="w-full max-w-[320px] aspect-[4/5] bg-[#E2A624] border-2 border-black rounded-t-full shadow-heritage flex flex-col items-center justify-center p-10">
-            <!-- REVOLVING CIRCLE REMOVED AS REQUESTED -->
+          <div class="w-full max-w-[320px] aspect-[4/5] bg-[#E2A624] border-2 border-black rounded-t-full shadow-h flex flex-col items-center justify-center p-10 text-center">
             <div class="text-5xl md:text-6xl font-black text-[#163240]">
               <span data-lang="bn">শিল্প</span><span data-lang="hi">कला</span><span data-lang="en">ART</span>
             </div>
@@ -101,101 +101,146 @@ body.lang-en span[data-lang="en"], body.lang-en div[data-lang="en"] { display: i
             </div>
           </div>
         </div>
-      </header>
+      </section>
+
+      <!-- MARQUEE -->
+      <div class="bg-black text-white py-6 overflow-hidden border-b-2 border-black">
+        <div class="animate-marquee gap-10 whitespace-nowrap">
+          <div class="flex items-center gap-10 text-xl font-tech uppercase font-bold">
+            <span data-lang="en">Digital Renaissance of Bengal</span><span data-lang="bn">বাংলার ডিজিটাল নবজাগরণ</span><span class="text-[#E2A624]">✽</span>
+            <span data-lang="en">Digital Renaissance of Bengal</span><span data-lang="bn">বাংলার ডিজিটাল নবজাগরণ</span><span class="text-[#E2A624]">✽</span>
+          </div>
+          <div class="flex items-center gap-10 text-xl font-tech uppercase font-bold">
+            <span data-lang="en">Digital Renaissance of Bengal</span><span data-lang="bn">বাংলার ডিজিটাল নবজাগরণ</span><span class="text-[#E2A624]">✽</span>
+            <span data-lang="en">Digital Renaissance of Bengal</span><span data-lang="bn">বাংলার ডিজিটাল নবজাগরণ</span><span class="text-[#E2A624]">✽</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHILOSOPHY -->
+      <section id="philosophy" class="grid lg:grid-cols-2 border-b-2 border-black">
+        <div class="p-8 lg:p-20 bg-[#E2A624] border-r-0 lg:border-r-2 border-black flex flex-col justify-center">
+            <span class="text-8xl text-[#B93B2B] leading-none -mb-6 block font-serif">❝</span>
+            <h2 class="text-3xl md:text-5xl font-bold text-[#163240] leading-tight">
+                <span data-lang="bn">প্রযুক্তি ক্যানভাস হলে, ডিজাইন হলো আমাদের তুলির আঁচড়।</span><span data-lang="en">If technology is the canvas, design is our brushstroke.</span>
+            </h2>
+        </div>
+        <div class="p-8 lg:p-20 bg-[#163240] text-white flex flex-col justify-center">
+            <p class="text-xl opacity-90 leading-relaxed font-serif">
+                <span data-lang="bn">পশ্চিমবঙ্গের সাংস্কৃতিক ঐতিহ্য থেকে অনুপ্রেরণা নিয়ে আমরা এমন ওয়েবসাইট তৈরি করি যা কেবল কাজই করে না, আপনার ব্যবসায় আস্থা বয়ে আনে।</span><span data-lang="en">Inspired by Bengal's rich heritage, we build websites that do more than function—they forge trust.</span>
+            </p>
+        </div>
+      </section>
 
       <!-- SERVICES -->
-      <section id="services" class="p-8 md:p-20 border-b-2 border-black bg-white">
+      <section id="services" class="p-8 md:p-20 border-b-2 border-black">
         <h2 class="text-4xl md:text-6xl font-black mb-16 text-[#163240]">
-          <span data-lang="bn">আমাদের কারিগরী দক্ষতা</span><span data-lang="hi">हमारा शिल्प कौशल</span><span data-lang="en">Our Craftsmanship</span>
+          <span data-lang="bn">আমাদের কারিগরী দক্ষতা</span><span data-lang="en">Our Craftsmanship</span>
         </h2>
         <div class="grid md:grid-cols-3 gap-8">
-          <div class="flex flex-col border-2 border-black bg-[#F5F2EB] shadow-heritage p-10">
-            <h3 class="text-4xl font-bold mb-4 font-tech uppercase"><span data-lang="bn">নকশা</span><span data-lang="en">Design</span></h3>
-            <p class="text-lg opacity-80 mb-10"><span data-lang="bn">বাংলার আলপনার মতোই দৃষ্টিনন্দন।</span><span data-lang="en">Aesthetic interfaces inspired by Bengali art.</span></p>
-            <div class="mt-auto bg-[#E2A624] -mx-10 -mb-10 p-4 px-8 flex justify-between font-tech text-xs font-bold uppercase tracking-widest">
-              <span>DESIGN UI / UX</span><span class="proc-num-plain">01</span>
-            </div>
+          <div class="flex flex-col border-2 border-black bg-white shadow-h p-10">
+            <div class="text-4xl text-[#B93B2B] mb-8">𖢲</div>
+            <h3 class="text-3xl font-bold mb-4 font-tech uppercase"><span data-lang="bn">নকশা</span><span data-lang="en">Design</span></h3>
+            <p class="opacity-70 mb-10">Aesthetic interfaces inspired by Bengal's craftsmanship.</p>
+            <div class="mt-auto bg-[#E2A624] -mx-10 -mb-10 p-4 px-8 flex justify-between font-tech text-xs font-bold uppercase tracking-widest"><span>DESIGN UI / UX</span><span>01</span></div>
           </div>
-          <div class="flex flex-col border-2 border-black bg-[#F5F2EB] shadow-heritage p-10">
-            <h3 class="text-4xl font-bold mb-4 font-tech uppercase"><span data-lang="bn">প্রকৌশল</span><span data-lang="en">Engineering</span></h3>
-            <p class="text-lg opacity-80 mb-10"><span data-lang="bn">হাওড়া ব্রিজের মতো শক্তিশালী পরিকাঠামো।</span><span data-lang="en">Infrastructure robust as the Howrah Bridge.</span></p>
-            <div class="mt-auto bg-[#E2A624] -mx-10 -mb-10 p-4 px-8 flex justify-between font-tech text-xs font-bold uppercase tracking-widest">
-              <span>WEB ARCHITECTURE</span><span class="proc-num-plain">02</span>
-            </div>
+          <div class="flex flex-col border-2 border-black bg-white shadow-h p-10">
+            <div class="text-4xl text-[#B93B2B] mb-8"><i data-lucide="settings"></i></div>
+            <h3 class="text-3xl font-bold mb-4 font-tech uppercase"><span data-lang="bn">প্রকৌশল</span><span data-lang="en">Engineering</span></h3>
+            <p class="opacity-70 mb-10">Infrastructure robust as the Howrah Bridge.</p>
+            <div class="mt-auto bg-[#E2A624] -mx-10 -mb-10 p-4 px-8 flex justify-between font-tech text-xs font-bold uppercase tracking-widest"><span>WEB ARCHITECTURE</span><span>02</span></div>
           </div>
         </div>
       </section>
 
-      <!-- PROCESS (WITH DYNAMIC NUMBERS) -->
+      <!-- PORTFOLIO -->
+      <section id="portfolio" class="p-8 md:p-20 border-b-2 border-black bg-[#1A1816] text-white">
+        <h2 class="text-4xl md:text-6xl font-black mb-16 text-[#E2A624]">Selected Works</h2>
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="border-2 border-white/20 p-6 hover:bg-white hover:text-black transition-all group cursor-pointer">
+                <div class="aspect-video bg-white/5 mb-6 flex items-center justify-center font-tech font-bold uppercase">Shop</div>
+                <h3 class="text-2xl font-bold mb-2">Artisan Marketplace</h3>
+                <p class="opacity-60">High-speed e-commerce solution.</p>
+            </div>
+            <div class="border-2 border-white/20 p-6 hover:bg-white hover:text-black transition-all group cursor-pointer">
+                <div class="aspect-video bg-white/5 mb-6 flex items-center justify-center font-tech font-bold uppercase">Brand</div>
+                <h3 class="text-2xl font-bold mb-2">Corporate Portal</h3>
+                <p class="opacity-60">Modern responsive branding.</p>
+            </div>
+        </div>
+      </section>
+
+      <!-- PROCESS (NUMBERS FIXED) -->
       <section id="process" class="p-8 md:p-20 bg-[#FFFBF0] border-b-2 border-black">
-        <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 uppercase font-tech text-[#163240]">
+        <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 uppercase font-tech">
           <span data-lang="bn">আমাদের কারিগরি প্রক্রিয়া</span><span data-lang="en">The Crafting Process</span>
         </h2>
         <div class="grid sm:grid-cols-4 gap-8">
-          <div class="p-8 border-2 border-black bg-white shadow-heritage">
+          <div class="p-8 border-2 border-black bg-white shadow-h">
             <div class="flex justify-between items-start mb-6">
-              <!-- RESPONSIVE PROCESS NUMBERS -->
               <span class="text-5xl font-black text-[#B93B2B]/20 font-tech proc-num" data-en="01" data-bn="০১" data-hi="01">০১</span>
-              <i data-lucide="search" class="text-[#163240]"></i>
+              <i data-lucide="search"></i>
             </div>
             <h3 class="text-xl font-bold mb-2">Discovery</h3>
-            <p class="text-sm opacity-60">Understanding your unique roots.</p>
           </div>
-          <div class="p-8 border-2 border-black bg-white shadow-heritage">
+          <div class="p-8 border-2 border-black bg-white shadow-h">
             <div class="flex justify-between items-start mb-6">
               <span class="text-5xl font-black text-[#B93B2B]/20 font-tech proc-num" data-en="02" data-bn="০২" data-hi="02">০২</span>
-              <span class="text-2xl font-bold text-[#163240]">$</span>
+              <span class="text-2xl font-bold">$</span>
             </div>
             <h3 class="text-xl font-bold mb-2">Milestone</h3>
-            <p class="text-sm opacity-60">Zero-risk progress payments.</p>
           </div>
-          <div class="p-8 border-2 border-black bg-white shadow-heritage">
+          <div class="p-8 border-2 border-black bg-white shadow-h">
             <div class="flex justify-between items-start mb-6">
               <span class="text-5xl font-black text-[#B93B2B]/20 font-tech proc-num" data-en="03" data-bn="০৩" data-hi="03">০৩</span>
-              <i data-lucide="lock" class="text-[#163240]"></i>
+              <i data-lucide="lock"></i>
             </div>
-            <h3 class="text-xl font-bold mb-2">SSL Secure</h3>
-            <p class="text-sm opacity-60">Enterprise grade code security.</p>
+            <h3 class="text-xl font-bold mb-2">Secure Dev</h3>
           </div>
-          <div class="p-8 border-2 border-black bg-white shadow-heritage">
+          <div class="p-8 border-2 border-black bg-white shadow-h">
             <div class="flex justify-between items-start mb-6">
               <span class="text-5xl font-black text-[#B93B2B]/20 font-tech proc-num" data-en="04" data-bn="০৪" data-hi="04">০৪</span>
-              <i data-lucide="rocket" class="text-[#163240]"></i>
+              <i data-lucide="rocket"></i>
             </div>
             <h3 class="text-xl font-bold mb-2">Launch</h3>
-            <p class="text-sm opacity-60">SEO and ownership handover.</p>
           </div>
         </div>
       </section>
 
-      <!-- CONTACT (VISIBILITY FIX) -->
+      <!-- FAQ -->
+      <section id="faq" class="p-8 md:p-20 border-b-2 border-black">
+        <h2 class="text-4xl font-bold mb-12">FAQ</h2>
+        <div class="max-w-3xl flex flex-col gap-4">
+            <details class="group border-2 border-black p-6 bg-white cursor-pointer"><summary class="font-bold flex justify-between">How long does it take? <i data-lucide="plus"></i></summary><p class="mt-4 opacity-70">Typically 2 to 4 weeks.</p></details>
+            <details class="group border-2 border-black p-6 bg-white cursor-pointer"><summary class="font-bold flex justify-between">Support provided? <i data-lucide="plus"></i></summary><p class="mt-4 opacity-70">Yes, continuous maintenance is provided.</p></details>
+        </div>
+      </section>
+
+      <!-- CONTACT (VISIBLE NUMBERS) -->
       <section id="contact" class="p-8 md:p-24 bg-[#F5F2EB]">
-        <div class="text-center mb-16">
-          <h2 class="text-4xl md:text-6xl font-black text-[#163240] mb-4">Connect With Us</h2>
-        </div>
+        <div class="text-center mb-16"><h2 class="text-4xl md:text-6xl font-black text-[#163240] mb-4">Connect With Us</h2></div>
         <div class="flex flex-col md:flex-row gap-6 max-w-screen-md mx-auto mb-12">
-            <!-- BOTH NUMBERS ARE NOW PERMANENTLY VISIBLE -->
-            <div class="flex-1 p-6 border-2 border-black bg-white shadow-heritage flex items-center gap-4">
-                <div><span class="block text-[10px] font-tech font-bold uppercase mb-1">MSME Registration</span><span class="font-bold">UDYAM-WB-18-0186128</span></div>
+            <div class="flex-1 p-6 border-2 border-black bg-white shadow-r flex items-center gap-4">
+                <div><span class="block text-[10px] font-tech font-bold uppercase mb-1">Government Registration</span><span class="font-bold">UDYAM-WB-18-0186128</span></div>
             </div>
-            <div class="flex-1 p-6 border-2 border-black bg-white shadow-mustard flex items-center gap-4">
-                <div><span class="block text-[10px] font-tech font-bold uppercase mb-1">Taxation / GSTIN</span><span class="font-bold">19BDYPL9210K1ZR</span></div>
+            <div class="flex-1 p-6 border-2 border-black bg-white shadow-h flex items-center gap-4">
+                <div><span class="block text-[10px] font-tech font-bold uppercase mb-1">Verified Taxation</span><span class="font-bold">19BDYPL9210K1ZR</span></div>
             </div>
         </div>
-        <form class="max-w-screen-md mx-auto p-10 border-2 border-black bg-[#FFFBF0] shadow-heritage">
+        <form class="max-w-screen-md mx-auto p-10 border-2 border-black bg-[#FFFBF0] shadow-h">
             <div class="grid md:grid-cols-2 gap-8 mb-8">
-                <input type="text" placeholder="Your Name" class="bg-transparent border-2 border-black p-4 outline-none focus:bg-white" />
-                <input type="email" placeholder="Your Email" class="bg-transparent border-2 border-black p-4 outline-none focus:bg-white" />
+                <input type="text" placeholder="Name" class="bg-transparent border-2 border-black p-4 outline-none focus:bg-white" />
+                <input type="email" placeholder="Email" class="bg-transparent border-2 border-black p-4 outline-none focus:bg-white" />
             </div>
-            <textarea rows="5" class="w-full mb-8 bg-transparent border-2 border-black p-4 outline-none focus:bg-white resize-none" placeholder="Your Message..."></textarea>
-            <button class="w-full bg-[#B93B2B] text-white border-2 border-black p-6 font-bold uppercase shadow-heritage">Send Message ➔</button>
+            <textarea rows="5" class="w-full mb-8 bg-transparent border-2 border-black p-4 outline-none focus:bg-white resize-none" placeholder="Message..."></textarea>
+            <button class="w-full bg-[#B93B2B] text-white border-2 border-black p-6 font-bold uppercase shadow-h">Send Message ➔</button>
         </form>
       </section>
     </main>
 
     <footer class="py-12 bg-[#163240] text-white text-center border-t-2 border-black">
-      <div class="text-3xl font-bold mb-2">Quantum Pixel</div>
-      <p class="text-[10px] opacity-40 uppercase tracking-widest">© 2026 THE DIGITAL ARTISANS OF BENGAL</p>
+      <div class="text-2xl font-bold mb-2">Quantum Pixel</div>
+      <p class="text-[10px] opacity-40 tracking-widest">© 2026 THE DIGITAL ARTISANS OF BENGAL</p>
     </footer>
   </div>
 
@@ -206,12 +251,12 @@ body.lang-en span[data-lang="en"], body.lang-en div[data-lang="en"] { display: i
       document.getElementById('overlay').classList.toggle('pointer-events-auto', s);
     }
     function setL(l) {
-      document.body.className = `lang-${l} ` + (l==='bn'?'font-bn':l==='hi'?'font-hi':'font-serif');
+      document.body.className = 'lang-' + l + ' ' + (l==='bn'?'font-bn':l==='hi'?'font-hi':'font-serif');
       ['en','bn','hi'].forEach(x => {
         const b = document.getElementById('b-'+x);
-        b.className = `px-1.5 md:px-4 py-1 text-[9px] md:text-sm font-bold border-r-2 last:border-r-0 border-black ${x===l?'bg-black text-white':'bg-white text-black'}`;
+        b.className = `px-1.5 md:px-4 py-1 text-[9px] md:text-sm font-bold border-r-2 last:border-r-0 border-black ${x===l?'bg-black text-white':'bg-transparent text-black'}`;
       });
-      // UPDATE NUMBERS BASED ON LANGUAGE
+      // RESPONSIVE NUMBERS FIX
       document.querySelectorAll('.proc-num').forEach(el => {
         el.innerText = el.getAttribute('data-' + l);
       });
