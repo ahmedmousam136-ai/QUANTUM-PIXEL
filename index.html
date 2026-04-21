@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Quantum Pixel | Digital Artisan Studio</title>
 
-<!-- Tailwind CSS & Fonts -->
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Noto+Serif+Bengali:wght@400..800&family=Noto+Serif+Devanagari:wght@400..700&family=Space+Grotesk:wght@400..700&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@latest"></script>
@@ -14,13 +13,15 @@
 :root { --bg: #F5F2EB; --ink: #1A1816; --red: #B93B2B; --gold: #E2A624; --blue: #163240; }
 body { background-color: var(--bg); color: var(--ink); font-family: 'Lora', serif; margin: 0; overflow-x: hidden; }
 
-/* ── MULTI-LANGUAGE CSS ── */
-[data-lang] { display: none; }
-body.lang-bn [data-lang="bn"] { display: inline-block; }
-body.lang-en [data-lang="en"] { display: inline-block; }
-body.lang-hi [data-lang="hi"] { display: inline-block; }
-/* Block level displays */
-body.lang-bn div[data-lang="bn"], body.lang-bn section[data-lang="bn"] { display: block; }
+/* ── LANGUAGE LOGIC (FIXED) ── */
+[data-lang] { display: none !important; }
+body.lang-bn [data-lang="bn"] { display: inline-block !important; }
+body.lang-en [data-lang="en"] { display: inline-block !important; }
+body.lang-hi [data-lang="hi"] { display: inline-block !important; }
+
+body.lang-bn .block-bn { display: block !important; }
+body.lang-en .block-en { display: block !important; }
+body.lang-hi .block-hi { display: block !important; }
 
 .font-bn { font-family: 'Noto Serif Bengali', serif; }
 .font-hi { font-family: 'Noto Serif Devanagari', serif; }
@@ -31,23 +32,20 @@ body.lang-bn div[data-lang="bn"], body.lang-bn section[data-lang="bn"] { display
 
 @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 .animate-marquee { display: flex; animation: scroll 30s linear infinite; }
-
 #sidebar { transform: translateX(-100%); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1); }
 #sidebar.open { transform: translateX(0); }
 </style>
 </head>
 <body class="lang-bn selection:bg-[#B93B2B] selection:text-white">
 
-  <!-- Sidebar Overlay -->
-  <div id="overlay" onclick="toggleMenu(false)" class="fixed inset-0 bg-black/60 z-[90] opacity-0 pointer-events-none transition-opacity duration-300"></div>
-  <!-- Sidebar -->
+  <!-- Mobile Sidebar -->
+  <div id="overlay" onclick="toggleMenu(false)" class="fixed inset-0 bg-black/60 z-[90] opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-sm"></div>
   <aside id="sidebar" class="fixed top-0 left-0 bottom-0 w-[80%] max-w-[320px] bg-[#F5F2EB] border-r-2 border-black z-[100] p-10 flex flex-col gap-10 shadow-[10px_0_0_var(--gold)]">
     <button onclick="toggleMenu(false)" class="self-end"><i data-lucide="x" class="w-8 h-8"></i></button>
     <nav class="flex flex-col gap-6 text-2xl font-bold">
-      <a href="#philosophy" onclick="toggleMenu(false)"><span data-lang="bn">দর্শন</span><span data-lang="en">Philosophy</span></a>
       <a href="#services" onclick="toggleMenu(false)"><span data-lang="bn">পরিষেবাদি</span><span data-lang="en">Services</span></a>
-      <a href="#portfolio" onclick="toggleMenu(false)"><span data-lang="bn">কাজ</span><span data-lang="en">Portfolio</span></a>
-      <a href="#process" onclick="toggleMenu(false)"><span data-lang="bn">প্রণালী</span><span data-lang="en">Process</span></a>
+      <a href="#portfolio" onclick="toggleMenu(false)"><span data-lang="bn">নির্বাচিত কাজ</span><span data-lang="en">Works</span></a>
+      <a href="#process" onclick="toggleMenu(false)"><span data-lang="bn">নির্মাণ প্রণালী</span><span data-lang="en">Process</span></a>
       <a href="#contact" onclick="toggleMenu(false)" class="text-[#B93B2B]"><span data-lang="bn">যোগাযোগ</span><span data-lang="en">Contact</span></a>
     </nav>
   </aside>
@@ -56,20 +54,17 @@ body.lang-bn div[data-lang="bn"], body.lang-bn section[data-lang="bn"] { display
     
     <!-- NAVIGATION (OVERLAP FIX) -->
     <nav class="sticky top-0 z-50 flex items-center justify-between px-2 md:px-10 py-3 md:py-6 border-b-2 border-black bg-[#F5F2EB]/95 backdrop-blur-sm">
-      <div class="flex items-center gap-2 md:gap-4 shrink">
+      <div class="flex items-center gap-2 md:gap-4 shrink overflow-hidden">
         <button onclick="toggleMenu(true)" class="p-1 shrink-0"><i data-lucide="menu" class="w-7 h-7"></i></button>
-        <div class="flex flex-col md:flex-row md:items-center gap-1 md:gap-3">
+        <div class="flex flex-col md:flex-row md:items-center gap-1 md:gap-3 truncate">
           <a href="#" class="text-base md:text-2xl font-bold flex gap-1 items-center">
-            <span data-lang="bn" class="font-bn">কোয়ান্টাম</span><span data-lang="en">Quantum</span><span data-lang="hi" class="font-hi">क्वांटम</span><span class="text-[#B93B2B] italic font-tech">Pixel</span>
+            <span data-lang="bn" class="font-bn">কোয়ান্টাম</span><span data-lang="hi" class="font-hi">क्वांटम</span><span data-lang="en">Quantum</span><span class="text-[#B93B2B] italic font-tech">Pixel</span>
           </a>
-          <!-- MSME BADGE -->
-          <div class="bg-[#FFFBF0] border-[1.5px] border-[#B93B2B] px-1.5 md:px-2 py-0.5 text-[7px] md:text-xs font-tech font-bold text-[#B93B2B] uppercase whitespace-nowrap">
-            <span data-lang="bn">(সরকার নিবন্ধিত MSME)</span><span data-lang="en">(A Govt. Registered MSME)</span><span data-lang="hi">(सरकार पंजीकृत MSME)</span>
+          <div class="bg-[#FFFBF0] border-[1.5px] border-[#B93B2B] px-1 md:px-3 py-0.5 text-[7px] md:text-xs font-tech font-bold text-[#B93B2B] uppercase truncate">
+            <span data-lang="bn">(সরকার নিবন্ধিত MSME)</span><span data-lang="en">(A Govt. Registered MSME)</span>
           </div>
         </div>
       </div>
-
-      <!-- LANGUAGE PICKER (Compact for Mobile) -->
       <div class="flex border-2 border-black bg-white shadow-[2px_2px_0_var(--gold)] shrink-0 ml-1">
         <button onclick="setL('bn')" id="b-bn" class="px-1.5 md:px-4 py-1 text-[9px] md:text-sm font-bold border-r-2 border-black bg-black text-white">BN</button>
         <button onclick="setL('hi')" id="b-hi" class="px-1.5 md:px-4 py-1 text-[9px] md:text-sm font-bold border-r-2 border-black">HI</button>
@@ -78,22 +73,22 @@ body.lang-bn div[data-lang="bn"], body.lang-bn section[data-lang="bn"] { display
     </nav>
 
     <main>
-      <!-- HERO (CIRCLE REMOVED AS REQUESTED) -->
+      <!-- HERO (CIRCLE REMOVED) -->
       <section class="grid lg:grid-cols-2 border-b-2 border-black">
         <div class="p-8 md:p-20 border-r-0 lg:border-r-2 border-black flex flex-col justify-center">
-            <div class="px-3 py-1 border border-black/20 rounded-full bg-yellow-500/10 w-fit mb-6 text-[10px] font-bold font-tech uppercase tracking-widest text-[#1A1816]/60">Made in Bengal ৾ Crafted for the World</div>
             <h1 class="text-4xl md:text-7xl font-bold leading-[1.1] text-[#163240] mb-8">
-                <span data-lang="bn" class="font-bn">ঐতিহ্যের মাটি থেকে ডিজিটাল শিল্প।</span><span data-lang="en">Digital Craft from Heritage Soil.</span><span data-lang="hi" class="font-hi">विरासत की मिट्टी से डिजिटल कला।</span>
+                <span data-lang="bn" class="font-bn">ঐতিহ্যের মাটি থেকে ডিজিটাল শিল্প।</span><span data-lang="en">Digital Craft from Heritage Soil.</span>
             </h1>
             <p class="text-lg opacity-80 mb-10 max-w-md">
-                <span data-lang="bn">পশ্চিমবঙ্গের শিল্প ঐতিহ্যের বুক থেকে জন্ম নেওয়া এক ইঞ্জিনিয়ারিং স্টুডিও।</span><span data-lang="en">A web engineering studio born from the artistic legacy of West Bengal.</span>
+                <span data-lang="bn">পশ্চিমবঙ্গের শিল্প ঐতিহ্যের বুক থেকে জন্ম নেওয়া এক ইঞ্জিনিয়ারিং স্টুডিও।</span><span data-lang="en">An engineering studio born from the legacy of Bengal.</span>
             </p>
-            <a href="#contact" class="w-fit bg-[#B93B2B] text-white border-2 border-black px-10 py-5 font-bold shadow-h hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all">
-                <span data-lang="bn">শুরু করুন</span><span data-lang="en">Start Building</span><span data-lang="hi">शुरू करें</span>
+            <a href="#contact" class="w-fit bg-[#B93B2B] text-white border-2 border-black px-10 py-5 font-bold shadow-h">
+                <span data-lang="bn">শুরু করুন</span><span data-lang="en">Start Building</span>
             </a>
         </div>
         <div class="p-10 md:p-20 flex items-center justify-center bg-[radial-gradient(#B93B2B_1px,transparent_1px)] bg-[length:25px_25px]">
           <div class="w-full max-w-[320px] aspect-[4/5] bg-[#E2A624] border-2 border-black rounded-t-full shadow-h flex flex-col items-center justify-center p-10 text-center">
+            <!-- CIRCLE IS GONE HERE -->
             <div class="text-5xl md:text-6xl font-black text-[#163240]"><span data-lang="en">ART</span><span data-lang="bn">শিল্প</span><span data-lang="hi">कला</span></div>
             <div class="text-6xl text-[#B93B2B] font-bold -my-5">+</div>
             <div class="text-4xl md:text-5xl font-black text-[#163240]"><span data-lang="en">TECH</span><span data-lang="bn">প্রযুক্তি</span><span data-lang="hi">तकनीक</span></div>
@@ -101,49 +96,26 @@ body.lang-bn div[data-lang="bn"], body.lang-bn section[data-lang="bn"] { display
         </div>
       </section>
 
-      <!-- MARQUEE -->
-      <div class="bg-black text-white py-6 overflow-hidden border-b-2 border-black">
-        <div class="animate-marquee gap-10 whitespace-nowrap">
-          <div class="flex items-center gap-10 text-xl font-tech font-bold uppercase">
-            <span data-lang="bn">বাংলার ডিজিটাল নবজাগরণ</span><span data-lang="en">Digital Renaissance of Bengal</span><span class="text-[#E2A624]">✽</span>
-            <span data-lang="bn">বাংলার ডিজিটাল নবজাগরণ</span><span data-lang="en">Digital Renaissance of Bengal</span><span class="text-[#E2A624]">✽</span>
-          </div>
-          <div class="flex items-center gap-10 text-xl font-tech font-bold uppercase">
-            <span data-lang="bn">বাংলার ডিজিটাল নবজাগরণ</span><span data-lang="en">Digital Renaissance of Bengal</span><span class="text-[#E2A624]">✽</span>
-            <span data-lang="bn">বাংলার ডিজিটাল নবজাগরণ</span><span data-lang="en">Digital Renaissance of Bengal</span><span class="text-[#E2A624]">✽</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- SERVICES -->
+      <!-- SERVICES (MATCHBOX STYLE) -->
       <section id="services" class="p-8 md:p-20 border-b-2 border-black bg-white">
         <h2 class="text-4xl md:text-6xl font-black mb-16 text-[#163240]">
-            <span data-lang="bn">আমাদের কারিগরী দক্ষতা</span><span data-lang="en">Our Craftsmanship</span>
+            <span data-lang="bn">আমাদের কারিগরি দক্ষতা</span><span data-lang="en">Our Craftsmanship</span>
         </h2>
-        <div class="grid md:grid-cols-2 gap-8">
-            <div class="flex flex-col border-2 border-black bg-[#F5F2EB] shadow-h p-10 hover:shadow-r transition-all">
-                <div class="text-4xl text-[#B93B2B] mb-8">𖢲</div>
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="flex flex-col border-2 border-black bg-[#F5F2EB] shadow-h p-10">
                 <h3 class="text-3xl font-bold mb-4 font-tech uppercase"><span data-lang="bn">নকশা</span><span data-lang="en">Design</span></h3>
-                <p class="text-lg opacity-70 mb-10"><span data-lang="bn">বাংলার আলপনার মতোই দৃষ্টিনন্দন ইন্টারফেস।</span><span data-lang="en">Interfaces inspired by Bengal's beautiful art.</span></p>
-                <div class="mt-auto bg-[#E2A624] -mx-10 -mb-10 p-4 px-8 flex justify-between font-bold uppercase text-xs"><span>Design UI / UX</span><span>01</span></div>
+                <p class="opacity-70 mb-10"><span data-lang="bn">বাংলার আলপনার মতোই দৃষ্টিনন্দন ইন্টারফেস।</span><span data-lang="en">Interfaces inspired by Bengal's beautiful art.</span></p>
+                <div class="mt-auto bg-[#E2A624] -mx-10 -mb-10 p-4 px-8 flex justify-between font-bold text-xs uppercase"><span>Design UI / UX</span><span>01</span></div>
             </div>
-            <div class="flex flex-col border-2 border-black bg-[#F5F2EB] shadow-h p-10 hover:shadow-r transition-all">
-                <div class="text-4xl text-[#B93B2B] mb-8"><i data-lucide="settings"></i></div>
-                <h3 class="text-3xl font-bold mb-4 font-tech uppercase"><span data-lang="bn">প্রকৌশল</span><span data-lang="en">Dev</span></h3>
-                <p class="text-lg opacity-70 mb-10"><span data-lang="bn">হাওড়া ব্রিজের মতো শক্তিশালী পরিকাঠামো।</span><span data-lang="en">Infrastructure robust as the Howrah Bridge.</span></p>
-                <div class="mt-auto bg-[#E2A624] -mx-10 -mb-10 p-4 px-8 flex justify-between font-bold uppercase text-xs"><span>Architecture</span><span>02</span></div>
+            <div class="flex flex-col border-2 border-black bg-[#F5F2EB] shadow-h p-10">
+                <h3 class="text-3xl font-bold mb-4 font-tech uppercase"><span data-lang="bn">প্রকৌশল</span><span data-lang="en">Engineering</span></h3>
+                <p class="opacity-70 mb-10"><span data-lang="bn">হাওড়া ব্রিজের মতো শক্তিশালী পরিকাঠামো।</span><span data-lang="en">Infrastructure robust as the Howrah Bridge.</span></p>
+                <div class="mt-auto bg-[#E2A624] -mx-10 -mb-10 p-4 px-8 flex justify-between font-bold text-xs uppercase"><span>Architecture</span><span>02</span></div>
             </div>
-        </div>
-      </section>
-
-      <!-- PORTFOLIO -->
-      <section id="portfolio" class="p-8 md:p-20 bg-black text-white border-b-2 border-black">
-        <h2 class="text-4xl md:text-6xl font-black mb-16 text-[#E2A624] tracking-tighter">Selected Works</h2>
-        <div class="grid md:grid-cols-2 gap-8">
-            <div class="border-2 border-white/20 p-8 hover:bg-white hover:text-black transition-all">
-                <div class="aspect-video bg-white/5 mb-8 flex items-center justify-center font-bold font-tech text-white/40 uppercase">Shop</div>
-                <h3 class="text-2xl font-bold mb-2">Artisan Marketplace</h3>
-                <p class="opacity-60 text-sm">High-speed secure e-commerce.</p>
+            <div class="flex flex-col border-2 border-black bg-[#F5F2EB] shadow-h p-10">
+                <h3 class="text-3xl font-bold mb-4 font-tech uppercase"><span data-lang="bn">প্রসার</span><span data-lang="en">Scale</span></h3>
+                <p class="opacity-70 mb-10"><span data-lang="bn">বিশ্বের বিশাল জগতে প্রসারের কৌশল।</span><span data-lang="en">Strategies to expand and grow globally.</span></p>
+                <div class="mt-auto bg-[#E2A624] -mx-10 -mb-10 p-4 px-8 flex justify-between font-bold text-xs uppercase"><span>Scale & SEO</span><span>03</span></div>
             </div>
         </div>
       </section>
@@ -151,69 +123,66 @@ body.lang-bn div[data-lang="bn"], body.lang-bn section[data-lang="bn"] { display
       <!-- PROCESS (NUMBERS LANGUAGE CHANGING FIXED) -->
       <section id="process" class="p-8 md:p-20 bg-[#FFFBF0] border-b-2 border-black">
         <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 uppercase font-tech">
-            <span data-lang="bn">নির্মাণ প্রণালী</span><span data-lang="en">Our Craft Process</span>
+            <span data-lang="bn">নির্মাণ প্রণালী</span><span data-lang="en">Crafting Process</span>
         </h2>
         <div class="grid sm:grid-cols-4 gap-8">
             <div class="p-8 border-2 border-black bg-white shadow-h">
                 <div class="flex justify-between items-start mb-6">
-                  <span class="text-5xl font-black text-red-600/20 font-tech">
-                        <!-- Numbers change based on language -->
-                        <span data-lang="en">01</span><span data-lang="bn">০১</span><span data-lang="hi">01</span>
-                  </span>
-                  <i data-lucide="search" class="text-[#163240]"></i>
+                    <span class="text-5xl font-black text-[#B93B2B]/20 font-tech">
+                        <span data-lang="bn">০১</span><span data-lang="en">01</span><span data-lang="hi">01</span>
+                    </span>
+                    <i data-lucide="search"></i>
                 </div>
                 <h3 class="font-bold text-xl uppercase mb-2">Discovery</h3>
-                <p class="text-sm opacity-60">Understanding your unique business roots.</p>
             </div>
             <div class="p-8 border-2 border-black bg-white shadow-h">
                 <div class="flex justify-between items-start mb-6">
-                  <span class="text-5xl font-black text-red-600/20 font-tech">
-                        <span data-lang="en">02</span><span data-lang="bn">০২</span><span data-lang="hi">02</span>
-                  </span>
-                  <span class="text-2xl font-bold text-[#163240]">$</span>
+                    <span class="text-5xl font-black text-[#B93B2B]/20 font-tech">
+                        <span data-lang="bn">০২</span><span data-lang="en">02</span><span data-lang="hi">02</span>
+                    </span>
+                    <span class="text-2xl font-bold text-[#163240]">$</span>
                 </div>
                 <h3 class="font-bold text-xl uppercase mb-2">Milestone</h3>
-                <p class="text-sm opacity-60">Pay incrementally as you approve stages.</p>
             </div>
             <div class="p-8 border-2 border-black bg-white shadow-h">
                 <div class="flex justify-between items-start mb-6">
-                  <span class="text-5xl font-black text-red-600/20 font-tech">
-                        <span data-lang="en">03</span><span data-lang="bn">০৩</span><span data-lang="hi">03</span>
-                  </span>
-                  <i data-lucide="lock" class="text-[#163240]"></i>
+                    <span class="text-5xl font-black text-[#B93B2B]/20 font-tech">
+                        <span data-lang="bn">০৩</span><span data-lang="en">03</span><span data-lang="hi">03</span>
+                    </span>
+                    <i data-lucide="lock"></i>
                 </div>
-                <h3 class="font-bold text-xl uppercase mb-2">SSL Secure</h3>
-                <p class="text-sm opacity-60">Flawless coding with enterprise security.</p>
+                <h3 class="font-bold text-xl uppercase mb-2">Secure Dev</h3>
             </div>
             <div class="p-8 border-2 border-black bg-white shadow-h">
                 <div class="flex justify-between items-start mb-6">
-                  <span class="text-5xl font-black text-red-600/20 font-tech">
-                        <span data-lang="en">04</span><span data-lang="bn">০৪</span><span data-lang="hi">04</span>
-                  </span>
-                  <i data-lucide="rocket" class="text-[#163240]"></i>
+                    <span class="text-5xl font-black text-[#B93B2B]/20 font-tech">
+                        <span data-lang="bn">০৪</span><span data-lang="en">04</span><span data-lang="hi">04</span>
+                    </span>
+                    <i data-lucide="rocket"></i>
                 </div>
                 <h3 class="font-bold text-xl uppercase mb-2">Launch</h3>
-                <p class="text-sm opacity-60">World-wide release & 100% ownership.</p>
             </div>
         </div>
       </section>
 
-      <!-- CONTACT (IDENTIFICATION NUMBERS VISIBLE) -->
-      <section id="contact" class="p-8 md:p-24 bg-[#F5F2EB]">
-        <div class="text-center mb-16"><h2 class="text-4xl md:text-7xl font-black text-[#163240]">Connect With Us</h2></div>
-        
-        <!-- VISIBLE IDENTIFICATION GRID -->
-        <div class="grid md:grid-cols-2 gap-6 max-w-screen-md mx-auto mb-12">
-            <div class="p-6 border-2 border-black bg-white shadow-r">
-                <span class="text-[10px] font-bold uppercase tracking-widest opacity-50 block mb-1">MSME Registration</span>
-                <div class="text-lg font-black font-tech">UDYAM-WB-18-0186128</div>
+      <!-- TRUST (UDYAM & GST VISIBLE HERE) -->
+      <section id="trust" class="p-8 md:p-20 bg-[#F5F2EB] border-b-2 border-black">
+        <h2 class="text-4xl font-bold text-center mb-16 text-[#163240]">Why Trust Us?</h2>
+        <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div class="p-8 border-2 border-black bg-white shadow-r">
+                <span class="text-[10px] font-bold uppercase tracking-widest opacity-50 block mb-2">MSME Registration Number</span>
+                <div class="text-2xl font-black font-tech text-[#B93B2B]">UDYAM-WB-18-0186128</div>
             </div>
-            <div class="p-6 border-2 border-black bg-white shadow-h">
-                <span class="text-[10px] font-bold uppercase tracking-widest opacity-50 block mb-1">Taxation / GSTIN</span>
-                <div class="text-lg font-black font-tech">19BDYPL9210K1ZR</div>
+            <div class="p-8 border-2 border-black bg-white shadow-h">
+                <span class="text-[10px] font-bold uppercase tracking-widest opacity-50 block mb-2">Taxation / GST Registration</span>
+                <div class="text-2xl font-black font-tech text-[#163240]">19BDYPL9210K1ZR</div>
             </div>
         </div>
+      </section>
 
+      <!-- CONTACT -->
+      <section id="contact" class="p-8 md:p-24 bg-[#F5F2EB]">
+        <h2 class="text-4xl md:text-6xl font-black text-center mb-16 text-[#163240]">Connect</h2>
         <form class="max-w-screen-md mx-auto p-10 border-2 border-black bg-[#FFFBF0] shadow-h">
             <div class="grid md:grid-cols-2 gap-8 mb-8">
                 <input type="text" placeholder="Name" class="bg-transparent border-2 border-black p-4 outline-none focus:bg-white" />
@@ -227,7 +196,7 @@ body.lang-bn div[data-lang="bn"], body.lang-bn section[data-lang="bn"] { display
 
     <footer class="py-12 bg-[#163240] text-white text-center border-t-2 border-black">
       <div class="text-3xl font-bold mb-2">Quantum Pixel</div>
-      <p class="text-[10px] opacity-40 tracking-widest">© 2026 THE DIGITAL ARTISANS OF BENGAL</p>
+      <p class="text-[10px] opacity-40">© 2026 THE DIGITAL ARTISANS OF BENGAL</p>
     </footer>
   </div>
 
@@ -245,7 +214,7 @@ body.lang-bn div[data-lang="bn"], body.lang-bn section[data-lang="bn"] { display
       });
     }
     lucide.createIcons();
-    setL('bn'); // Default starting language
+    setL('bn');
   </script>
 </body>
 </html>
