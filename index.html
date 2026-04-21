@@ -260,15 +260,7 @@ nav {
 }
 
 .nav-msme-tag {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--terracotta-red);
-  background-color: #FFFBF0;
-  padding: 4px 10px;
-  border: 1.5px solid var(--terracotta-red);
-  white-space: nowrap;
-  /* Hidden on desktop by default (matches original), shown on its own nav row on mobile */
+  display: none !important;
 }
 
 .pixel-en {
@@ -1167,52 +1159,17 @@ footer {
   .trust-section { padding: 50px 20px; }
   .contact-form { padding: 25px; box-shadow: 4px 4px 0px var(--taxi-mustard), 4px 4px 0px 2px var(--ink-black); }
 
-  /* Nav: hide the MSME tag in the nav-left row on tablet,
-     keep it visible but tucked — it's already hidden via nav-msme-tag display:none
-     We'll show it below on its own strip at mobile. */
   .nav-msme-tag { display: none; }
 }
 
 /* ── MOBILE (≤ 600px) ── */
 @media (max-width: 600px) {
 
-  /* ── NAV: two-row layout so MSME tag gets its own line ── */
-  nav {
-    padding: 0 16px;
-    /* Switch to column so the MSME tag row sits below the logo/lang row */
-    flex-direction: column;
-    align-items: stretch;
-    height: auto;
-    gap: 0;
-  }
-
-  /* Row 1: hamburger + logo + lang toggle */
-  .nav-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 14px 0;
-    /* Nav-left takes all space except the lang-ticket width */
-    flex: 1 1 auto;
-    min-width: 0;
-  }
-
-  /* Logo font size reduced on mobile so it doesn't clash */
-  .logo {
-    font-size: 18px;
-    gap: 5px;
-  }
-
-  /* Lang ticket: stays on the same first row, attached to nav via flex on <nav> */
-  /* We need nav to be flex-row for row-1, then the MSME tag on row-2.
-     Achieve this by wrapping row-1 in a helper div — but we can't change HTML.
-     Instead use CSS order + width tricks: */
-
-  /* Make nav a CSS grid: row1 = nav-left + lang-ticket, row2 = msme-tag */
+  /* ── NAV: clean single row on mobile ── */
   nav {
     display: grid;
     grid-template-columns: 1fr auto;
-    grid-template-rows: auto auto;
+    grid-template-rows: auto;
     padding: 0 16px;
     gap: 0;
   }
@@ -1222,29 +1179,16 @@ footer {
     grid-row: 1 / 2;
     padding: 12px 0;
     align-items: center;
+    display: flex;
+    gap: 10px;
+    min-width: 0;
   }
 
-  /* Lang ticket sits right side of row 1 */
+  /* Lang ticket sits right side */
   .lang-ticket {
     grid-column: 2 / 3;
     grid-row: 1 / 2;
     align-self: center;
-  }
-
-  /* MSME tag: show it on its own row 2, full width */
-  .nav-msme-tag {
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-    grid-column: 1 / -1;
-    grid-row: 2 / 3;
-    border-top: 1px solid rgba(26,24,22,0.15);
-    padding: 8px 16px;
-    font-size: 0.78rem;
-    white-space: normal;
-    text-align: center;
-    margin: 0 -16px; /* bleed to nav edges */
-    background-color: #FFFBF0;
   }
 
   /* Lang button padding tightened on mobile */
@@ -1252,6 +1196,44 @@ footer {
     padding: 8px 12px;
     font-size: 12px;
   }
+
+  /* ── Logo: stack onto two lines on mobile ── */
+  .logo {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    line-height: 1.1;
+    font-size: 20px;
+  }
+  /* "Pixel" word sits on its own line, inherits the red colour from .pixel-en */
+  .logo .pixel-en {
+    display: block;
+    font-size: 20px;
+  }
+
+  /* ── MSME badge: appears above .heritage-badge via sibling pseudo trick ──
+     Since we can't touch HTML, we inject it as ::before on .hero-left itself,
+     positioned as the first flex child above .heritage-badge               */
+  .hero-left {
+    position: relative;
+  }
+  .hero-left::before {
+    content: attr(data-msme-bn);
+    display: block;
+    font-family: 'Noto Serif Bengali', serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--terracotta-red);
+    background-color: #FFFBF0;
+    border: 1.5px solid var(--terracotta-red);
+    padding: 5px 12px;
+    width: fit-content;
+    margin-bottom: 14px;
+    letter-spacing: 0.02em;
+    order: -1;
+  }
+
+  /* We use a JS-driven data attribute for the 3-language text — see script below */
 
   /* Hero */
   .hero-left { padding: 40px 16px; }
@@ -1907,10 +1889,26 @@ footer {
 </a>
 
 <script>
+  // MSME text per language
+  var msmeText = {
+    bn: '(সরকার নিবন্ধিত MSME)',
+    hi: '(सरकार पंजीकृत MSME)',
+    en: '(A Govt. Registered MSME)'
+  };
+
+  function updateMsmeBadge(lang) {
+    var heroLeft = document.querySelector('.hero-left');
+    if (heroLeft) heroLeft.setAttribute('data-msme-bn', msmeText[lang] || msmeText['bn']);
+  }
+
   // Language Switch
   function setLang(lang) {
     document.body.className = 'lang-' + lang + '-active';
+    updateMsmeBadge(lang);
   }
+
+  // Set initial attribute on load (default is Bengali)
+  updateMsmeBadge('bn');
 
   // Offcanvas Menu
   function toggleMenu() {
