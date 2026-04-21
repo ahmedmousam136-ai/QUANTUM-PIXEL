@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Pixel | Digital Artisan Studio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Noto+Serif+Bengali:wght@400..800&family=Noto+Serif+Devanagari:wght@400..700&family=Space+Grotesk:wght@400..700&display=swap" rel="stylesheet">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <style>
+        :root { --color-canvas: #F5F2EB; --color-ink: #1A1816; --color-terracotta: #B93B2B; --color-mustard: #E2A624; --color-indigo: #163240; }
+        body { background-color: var(--color-canvas); color: var(--color-ink); font-family: 'Lora', serif; margin: 0; }
+        .font-tech { font-family: 'Space Grotesk', sans-serif; }
+        .font-bengali { font-family: 'Noto Serif Bengali', serif; }
+        .font-hindi { font-family: 'Noto Serif Devanagari', serif; }
+        .shadow-heritage { box-shadow: 6px 6px 0px var(--color-ink); }
+        .shadow-mustard { box-shadow: 6px 6px 0px var(--color-mustard); }
+        .shadow-terracotta { box-shadow: 6px 6px 0px var(--color-terracotta); }
+        @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        .animate-marquee { display: flex; animation: scroll 30s linear infinite; }
+        [data-lang]:not(.active-lang) { display: none !important; }
+        .details-card { border: 2px solid var(--color-ink); background: #FFFBF0; transition: all 0.3s; }
+        .details-card:hover { transform: translateY(-5px); box-shadow: 6px 6px 0px var(--color-terracotta); }
+    </style>
+</head>
+<body class="selection:bg-[#B93B2B] selection:text-[#F5F2EB]">
+
+    <div class="max-w-[1400px] mx-auto border-x-2 border-[#1A1816] min-h-screen relative bg-[#F5F2EB]">
+        
+        <!-- Navigation -->
+        <nav class="sticky top-0 z-50 flex items-center justify-between px-4 md:px-10 py-5 border-b-2 border-[#1A1816] bg-[#F5F2EB]">
+            <div class="flex items-center gap-2 sm:gap-4 truncate">
+                <ion-icon name="menu-outline" class="text-3xl cursor-pointer"></ion-icon>
+                <a href="#" class="flex items-center gap-1.5 text-xl md:text-2xl font-bold flex-shrink-0">
+                    <span class="active-lang" data-bn="কোয়ান্টাম" data-hi="क्वांटम" data-en="Quantum">Quantum</span>
+                    <span class="text-[#B93B2B] font-tech italic">Pixel</span>
+                </a>
+                <div class="hidden sm:block border-[1.5px] border-[#B93B2B] bg-[#FFFBF0] px-2 py-0.5 text-[9px] md:text-xs font-tech font-bold text-[#B93B2B] uppercase whitespace-nowrap">
+                    <span class="active-lang" data-bn="(সরকার নিবন্ধিত MSME)" data-hi="(सरकार पंजीकृत MSME)" data-en="(A Govt. Registered MSME)">(A Govt. Registered MSME)</span>
+                </div>
+            </div>
+
+            <div class="flex border-2 border-[#1A1816] bg-[#F5F2EB] shadow-[2px_2px_0px_var(--color-mustard)] flex-shrink-0">
+                <button onclick="setLanguage('en')" class="lang-btn px-2.5 sm:px-4 py-1.5 text-[10px] sm:text-xs font-bold border-r-2 border-[#1A1816] bg-[#1A1816] text-white">EN</button>
+                <button onclick="setLanguage('bn')" class="lang-btn px-2.5 sm:px-4 py-1.5 text-[10px] sm:text-xs font-bold border-r-2 border-[#1A1816]">BN</button>
+                <button onclick="setLanguage('hi')" class="lang-btn px-2.5 sm:px-4 py-1.5 text-[10px] sm:text-xs font-bold font-hindi">HI</button>
+            </div>
+        </nav>
+
+        <main>
+            <!-- Hero Section -->
+            <section class="grid lg:grid-cols-2 border-b-2 border-[#1A1816]">
+                <div class="p-8 md:p-12 lg:p-20 border-r-0 lg:border-r-2 border-[#1A1816] flex flex-col justify-center">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 border border-black/20 rounded-full bg-[#E2A624]/10 w-fit mb-8 font-tech text-[10px] uppercase font-bold">
+                        Made in Bengal ৾ Crafted for the World
+                    </div>
+                    <h1 class="text-[2.8rem] sm:text-[4rem] lg:text-[4.5rem] font-bold leading-[1.1] text-[#163240] mb-6">
+                        <span class="active-lang" data-bn="ঐতিহ্যের মাটি থেকে ডিজিটাল শিল্প।" data-hi="विरासत की मिट्टी से डिजिटल कला।" data-en="Digital Craft from Heritage Soil.">Digital Craft from Heritage Soil.</span>
+                    </h1>
+                    <p class="text-lg md:text-xl text-black/80 max-w-lg mb-10 leading-relaxed">
+                        <span class="active-lang" data-bn="পশ্চিমবঙ্গের শৈল্পিক ঐতিহ্যের বুক থেকে জন্ম নেওয়া এক ওয়েব ইঞ্জিনিয়ারিং স্টুডিও।" data-hi="पश्चिम बंगाल की कलात्मक विरासत के बीच पैदा हुआ एक वेब इंजीनियरिंग स्टूडियो।" data-en="A web engineering studio born from the artistic legacy of West Bengal.">A web engineering studio born from the artistic legacy of West Bengal.</span>
+                    </p>
+                    <a href="#contact" class="w-fit bg-[#B93B2B] text-white border-2 border-[#1A1816] px-8 py-4 text-lg font-bold shadow-heritage hover:-translate-y-1 transition-all">
+                        <span class="active-lang" data-bn="আমাদের সাথে শুরু করুন" data-hi="हमारे साथ शुरुआत करें" data-en="Start Building">Start Building</span>
+                    </a>
+                </div>
+                <div class="p-10 md:p-20 bg-[radial-gradient(#B93B2B_1px,transparent_1px)] bg-[length:25px_25px] flex items-center justify-center">
+                    <div class="w-full max-w-[350px] aspect-[4/5] bg-[#E2A624] border-2 border-[#1A1816] rounded-t-full shadow-heritage flex flex-col items-center justify-center p-10 text-center">
+                        <ion-icon name="color-palette-outline" class="text-7xl text-[#163240] mb-6 animate-bounce"></ion-icon>
+                        <div class="text-4xl font-bold text-[#163240]">ART + TECH</div>
+                        <div class="mt-4 pt-4 border-t-2 border-[#163240] font-tech text-xs uppercase font-bold">Digital Artisans</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Marquee -->
+            <div class="bg-[#1A1816] text-white py-6 overflow-hidden border-b-2 border-[#1A1816]">
+                <div class="animate-marquee gap-10">
+                    <div class="flex items-center gap-10 text-xl font-tech font-bold uppercase whitespace-nowrap">
+                        <span class="active-lang" data-bn="বাংলার ডিজিটাল নবজাগরণ" data-hi="बंगाल का डिजिटल पुनर्जागरण" data-en="DIGITAL RENAISSANCE OF BENGAL">DIGITAL RENAISSANCE</span> <span class="text-[#E2A624]">✽</span>
+                        <span class="active-lang" data-bn="বাংলার ডিজিটাল নবজাগরণ" data-hi="बंगाल का डिजिटल पुनर्जागरण" data-en="DIGITAL RENAISSANCE OF BENGAL">DIGITAL RENAISSANCE</span> <span class="text-[#E2A624]">✽</span>
+                    </div>
+                    <div class="flex items-center gap-10 text-xl font-tech font-bold uppercase whitespace-nowrap">
+                        <span class="active-lang" data-bn="বাংলার ডিজিটাল নবজাগরণ" data-hi="बंगाल का ডিজিটাল पुनर्जागरण" data-en="DIGITAL RENAISSANCE OF BENGAL">DIGITAL RENAISSANCE</span> <span class="text-[#E2A624]">✽</span>
+                        <span class="active-lang" data-bn="বাংলার ডিজিটাল নবজাগরণ" data-hi="बंगाल का ডিজিটাল पुनर्जागरण" data-en="DIGITAL RENAISSANCE OF BENGAL">DIGITAL RENAISSANCE</span> <span class="text-[#E2A624]">✽</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Process Section -->
+            <section class="p-8 md:p-20 border-b-2 border-[#1A1816]">
+                <h2 class="text-4xl md:text-5xl font-bold text-[#163240] text-center mb-16">
+                    <span class="active-lang" data-bn="নির্মাণ প্রণালী" data-hi="निर्माण प्रक्रिया" data-en="The Crafting Process">The Crafting Process</span>
+                </h2>
+                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="details-card p-8">
+                        <div class="text-4xl font-bold text-[#B93B2B]/30 mb-4 font-tech">01</div>
+                        <h3 class="text-xl font-bold mb-2">Discovery</h3>
+                        <p class="text-sm opacity-80">Deeply understanding your brands roots and target audience.</p>
+                    </div>
+                    <div class="details-card p-8">
+                        <div class="text-4xl font-bold text-[#B93B2B]/30 mb-4 font-tech">02</div>
+                        <h3 class="text-xl font-bold mb-2">Milestones</h3>
+                        <p class="text-sm opacity-80">Zero-risk development. Pay only after approving the work.</p>
+                    </div>
+                    <div class="details-card p-8">
+                        <div class="text-4xl font-bold text-[#B93B2B]/30 mb-4 font-tech">03</div>
+                        <h3 class="text-xl font-bold mb-2">Secure Dev</h3>
+                        <p class="text-sm opacity-80">Modern coding standards with absolute SSL data encryption.</p>
+                    </div>
+                    <div class="details-card p-8">
+                        <div class="text-4xl font-bold text-[#B93B2B]/30 mb-4 font-tech">04</div>
+                        <h3 class="text-xl font-bold mb-2">Launch</h3>
+                        <p class="text-sm opacity-80">World-wide release with 100% ownership handed over to you.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Trust Section -->
+            <section class="p-8 md:p-20 bg-[#FFFBF0] border-b-2 border-[#1A1816]">
+                <h2 class="text-4xl md:text-5xl font-bold text-[#163240] text-center mb-12">Why Trust Us?</h2>
+                <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                    <div class="p-8 border-2 border-black bg-white shadow-heritage">
+                        <ion-icon name="checkmark-circle-outline" class="text-4xl text-[#B93B2B] mb-4"></ion-icon>
+                        <h3 class="text-xl font-bold mb-2">Verified & Legal</h3>
+                        <p class="text-sm opacity-70">A Govt. Registered MSME with a verified GSTIN.</p>
+                    </div>
+                    <div class="p-8 border-2 border-black bg-white shadow-heritage">
+                        <ion-icon name="lock-closed-outline" class="text-4xl text-[#B93B2B] mb-4"></ion-icon>
+                        <h3 class="text-xl font-bold mb-2">Full Ownership</h3>
+                        <p class="text-sm opacity-70">You own 100% of the code. No hidden fees or locks.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="py-16 px-8 border-t-2 border-[#1A1816] bg-[#163240] text-white text-center">
+            <div class="text-3xl font-bold mb-4">Quantum <span class="text-[#E2A624] font-tech italic">Pixel</span></div>
+            <p class="text-[10px] uppercase tracking-widest opacity-60">© 2026 THE DIGITAL ARTISANS OF BENGAL.</p>
+        </footer>
+    </div>
+
+    <script>
+        function setLanguage(lang) {
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('bg-[#1A1816]', 'text-white');
+                if(btn.innerText.toLowerCase() === lang) btn.classList.add('bg-[#1A1816]', 'text-white');
+            });
+            document.querySelectorAll('.active-lang').forEach(el => {
+                el.innerText = el.getAttribute('data-' + lang);
+            });
+            document.body.classList.remove('font-bengali', 'font-hindi');
+            if(lang === 'bn') document.body.classList.add('font-bengali');
+            if(lang === 'hi') document.body.classList.add('font-hindi');
+        }
+    </script>
+</body>
+</html>
