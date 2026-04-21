@@ -126,16 +126,12 @@ nav {
   top: 0;
   background-color: var(--bg-canvas);
   z-index: 100;
-  gap: 12px;
 }
 
 .nav-left {
   display: flex;
   align-items: center;
   gap: 20px;
-  /* Allow nav-left to shrink so lang-ticket never gets pushed off */
-  min-width: 0;
-  flex: 1 1 auto;
 }
 
 .hamburger-btn {
@@ -147,7 +143,6 @@ nav {
   gap: 5px;
   padding: 5px;
   transition: transform 0.2s;
-  flex-shrink: 0;
 }
 
 .hamburger-btn:hover {
@@ -245,22 +240,17 @@ nav {
   display: flex;
   align-items: center;
   gap: 8px;
-  /* Allow logo to shrink if needed */
-  min-width: 0;
-  flex-shrink: 1;
-}
-
-/* Logo text truncation on very small screens */
-.logo span.bn-text,
-.logo span.hi-text,
-.logo span.en-text {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .nav-msme-tag {
-  display: none !important;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--terracotta-red);
+  background-color: #FFFBF0;
+  padding: 4px 10px;
+  border: 1.5px solid var(--terracotta-red);
+  white-space: nowrap;
 }
 
 .pixel-en {
@@ -268,7 +258,6 @@ nav {
   font-family: 'Space Grotesk', sans-serif;
   display: inline-block;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  flex-shrink: 0;
 }
 
 .logo:hover .pixel-en {
@@ -284,7 +273,6 @@ nav {
   overflow: hidden;
   box-shadow: 4px 4px 0px var(--taxi-mustard);
   transition: all 0.2s ease;
-  flex-shrink: 0;
 }
 
 .lang-btn {
@@ -374,7 +362,7 @@ body.lang-en-active .btn-en {
 .cta-button:hover {
   transform: translate(-3px, -3px);
   box-shadow: 9px 9px 0px var(--ink-black);
-  background-color: #a03022;
+  background-color: #a03022; /* slightly darker terracotta */
 }
 
 .cta-button:active {
@@ -399,7 +387,7 @@ body.lang-en-active .btn-en {
   height: 550px;
   background-color: var(--taxi-mustard);
   border: var(--border-thick);
-  border-radius: 200px 200px 0 0;
+  border-radius: 200px 200px 0 0; /* Classic Arch */
   box-shadow: 12px 12px 0px var(--ink-black);
   display: flex;
   flex-direction: column;
@@ -417,6 +405,7 @@ body.lang-en-active .btn-en {
   box-shadow: 16px 16px 0px var(--ink-black);
 }
 
+/* Subtle Alpana Motif in the Arch */
 .alpana-motif {
   position: absolute;
   top: 40px;
@@ -460,7 +449,7 @@ body.lang-en-active .btn-en {
   margin-top: 20px;
 }
 
-/* ── MARQUEE ── */
+/* ── MARQUEE: THE DIGITAL RENAISSANCE ── */
 .marquee {
   background: var(--ink-black);
   color: var(--bg-canvas);
@@ -487,7 +476,7 @@ body.lang-en-active .btn-en {
 
 @keyframes scrollText { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-/* ── SERVICES BUREAU ── */
+/* ── THE MATCHBOX SERVICES BUREAU ── */
 .services-bureau {
   padding: 80px 40px;
 }
@@ -579,7 +568,7 @@ body.lang-en-active .btn-en {
   color: var(--ink-black);
 }
 
-/* ── PROCESS SECTION ── */
+/* ── THE CRAFTING PROCESS ── */
 .process-section {
   padding: 80px 40px;
   border-top: var(--border-thick);
@@ -637,7 +626,7 @@ body.lang-en-active .btn-en {
   border-style: solid;
 }
 
-/* ── PHILOSOPHY / ABOUT ── */
+/* ── PHILOSOPHY (ABOUT US) ── */
 .philosophy-section {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -696,7 +685,7 @@ body.lang-en-active .btn-en {
   opacity: 0.95;
 }
 
-/* ── TRUST SECTION ── */
+/* ── WHY TRUST US ── */
 .trust-section {
   padding: 80px 40px;
   border-top: var(--border-thick);
@@ -844,9 +833,9 @@ body.lang-en-active .btn-en {
   max-width: 700px;
   margin: 0 auto;
   border: var(--border-thick);
-  background: #FFFBF0;
+  background: #FFFBF0; /* Heritage bright paper */
   padding: 40px;
-  box-shadow: 8px 8px 0px var(--taxi-mustard), 8px 8px 0px 2px var(--ink-black);
+  box-shadow: 8px 8px 0px var(--taxi-mustard), 8px 8px 0px 2px var(--ink-black); /* Retro doubled shadow */
 }
 
 .form-group {
@@ -877,7 +866,7 @@ body.lang-en-active .btn-en {
 }
 
 .form-input:hover, .form-textarea:hover {
-  background: rgba(226, 166, 36, 0.05);
+  background: rgba(226, 166, 36, 0.05); /* very light mustard tint */
 }
 
 .form-input:focus, .form-textarea:focus {
@@ -918,6 +907,41 @@ body.lang-en-active .btn-en {
   box-shadow: 0px 0px 0px var(--ink-black);
 }
 
+@media (max-width: 900px) {
+  .philosophy-section { grid-template-columns: 1fr; }
+  .phil-left { border-right: none; border-bottom: var(--border-thick); padding: 50px 20px; }
+  .phil-right { padding: 50px 20px; }
+  .contact-section { padding: 50px 20px; }
+  .trust-section { padding: 50px 20px; }
+  .contact-form { padding: 25px; box-shadow: 4px 4px 0px var(--taxi-mustard), 4px 4px 0px 2px var(--ink-black); }
+}
+
+/* ── FOOTER ── */
+footer {
+  border-top: var(--border-thick);
+  padding: 60px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background-color: var(--river-indigo);
+  color: var(--bg-canvas);
+}
+
+.footer-logo {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.footer-copy {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.8;
+}
+
 /* ── PORTFOLIO ── */
 .portfolio-section {
   padding: 80px 40px;
@@ -935,6 +959,7 @@ body.lang-en-active .btn-en {
   font-size: 3rem;
   font-weight: 800;
   letter-spacing: -0.03em;
+  color: var(--mustard-yellow); /* Fallback */
   color: var(--taxi-mustard, #EAB308);
 }
 
@@ -1039,7 +1064,7 @@ summary.faq-q {
   font-weight: 700;
   color: var(--ink-black);
   cursor: pointer;
-  list-style: none;
+  list-style: none; /* Hide default arrow */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1100,194 +1125,21 @@ details.faq-item[open] summary.faq-q::after {
   fill: currentColor;
 }
 
-/* ── FOOTER ── */
-footer {
-  border-top: var(--border-thick);
-  padding: 60px 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  background-color: var(--river-indigo);
-  color: var(--bg-canvas);
-}
-
-.footer-logo {
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 20px;
-}
-
-.footer-copy {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 14px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  opacity: 0.8;
-}
-
-/* ═══════════════════════════════════════
-   RESPONSIVE BREAKPOINTS
-   ═══════════════════════════════════════ */
-
-/* ── TABLET (≤ 900px) ── */
+/* ── RESPONSIVE ── */
 @media (max-width: 900px) {
-  /* Hero */
   .hero { grid-template-columns: 1fr; }
   .hero-left { border-right: none; border-bottom: var(--border-thick); padding: 50px 20px; }
   .hero-right { padding: 40px 20px; }
-
-  /* Services */
   .matchbox-grid { grid-template-columns: 1fr; }
-  .bureau-header { flex-direction: column; align-items: flex-start; gap: 20px; }
-  .services-bureau { padding: 50px 20px; }
-
-  /* Process */
   .process-grid { grid-template-columns: 1fr; }
+  .bureau-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+  nav { padding: 20px; }
+  .services-bureau { padding: 50px 20px; }
   .process-section { padding: 50px 20px; }
-
-  /* Tech */
   .tech-section { padding: 50px 20px; }
-
-  /* Philosophy */
-  .philosophy-section { grid-template-columns: 1fr; }
-  .phil-left { border-right: none; border-bottom: var(--border-thick); padding: 50px 20px; }
-  .phil-right { padding: 50px 20px; }
-
-  /* Contact & Trust */
-  .contact-section { padding: 50px 20px; }
-  .trust-section { padding: 50px 20px; }
-  .contact-form { padding: 25px; box-shadow: 4px 4px 0px var(--taxi-mustard), 4px 4px 0px 2px var(--ink-black); }
-
   .nav-msme-tag { display: none; }
 }
 
-/* ── MOBILE (≤ 600px) ── */
-@media (max-width: 600px) {
-
-  /* ── NAV: clean single row on mobile ── */
-  nav {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    grid-template-rows: auto;
-    padding: 0 16px;
-    gap: 0;
-  }
-
-  .nav-left {
-    grid-column: 1 / 2;
-    grid-row: 1 / 2;
-    padding: 12px 0;
-    align-items: center;
-    display: flex;
-    gap: 10px;
-    min-width: 0;
-  }
-
-  /* Lang ticket sits right side */
-  .lang-ticket {
-    grid-column: 2 / 3;
-    grid-row: 1 / 2;
-    align-self: center;
-  }
-
-  /* Lang button padding tightened on mobile */
-  .lang-btn {
-    padding: 8px 12px;
-    font-size: 12px;
-  }
-
-  /* ── Logo: stack onto two lines on mobile ── */
-  .logo {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0;
-    line-height: 1.1;
-    font-size: 20px;
-  }
-  /* "Pixel" word sits on its own line, inherits the red colour from .pixel-en */
-  .logo .pixel-en {
-    display: block;
-    font-size: 20px;
-  }
-
-  /* ── MSME badge: appears above .heritage-badge via sibling pseudo trick ──
-     Since we can't touch HTML, we inject it as ::before on .hero-left itself,
-     positioned as the first flex child above .heritage-badge               */
-  .hero-left {
-    position: relative;
-  }
-  .hero-left::before {
-    content: attr(data-msme-bn);
-    display: block;
-    font-family: 'Noto Serif Bengali', serif;
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: var(--terracotta-red);
-    background-color: #FFFBF0;
-    border: 1.5px solid var(--terracotta-red);
-    padding: 5px 12px;
-    width: fit-content;
-    margin-bottom: 14px;
-    letter-spacing: 0.02em;
-    order: -1;
-  }
-
-  /* We use a JS-driven data attribute for the 3-language text — see script below */
-
-  /* Hero */
-  .hero-left { padding: 40px 16px; }
-  .hero-right { padding: 30px 16px; }
-  .rajbari-arch { height: 420px; }
-  .arch-headline { font-size: 2.2rem; }
-
-  /* Sections */
-  .services-bureau { padding: 40px 16px; }
-  .process-section { padding: 40px 16px; }
-  .tech-section { padding: 40px 16px; }
-  .trust-section { padding: 40px 16px; }
-  .contact-section { padding: 40px 16px; }
-  .portfolio-section { padding: 40px 16px; }
-  .faq-section { padding: 40px 16px; }
-  footer { padding: 40px 16px; }
-
-  /* Portfolio grid single column */
-  .portfolio-grid { grid-template-columns: 1fr; }
-
-  /* FAQ */
-  .faq-title { font-size: 2rem; }
-  summary.faq-q { font-size: 1rem; }
-
-  /* Trust */
-  .trust-grid { grid-template-columns: 1fr; }
-
-  /* Process */
-  .process-step { padding: 25px; }
-
-  /* Tech tags smaller */
-  .tech-tag { font-size: 0.9rem; padding: 10px 16px; }
-
-  /* Offcanvas narrower */
-  .offcanvas-menu { width: 280px; padding: 25px; }
-
-  /* Whatsapp button */
-  .whatsapp-float { bottom: 20px; right: 16px; width: 52px; height: 52px; }
-  .whatsapp-float svg { width: 28px; height: 28px; }
-
-  /* Marquee smaller */
-  .marquee-content { font-size: 14px; }
-
-  /* Contact form */
-  .contact-form { padding: 20px 16px; }
-}
-
-/* ── EXTRA SMALL (≤ 380px) ── */
-@media (max-width: 380px) {
-  .logo { font-size: 16px; }
-  .lang-btn { padding: 7px 9px; font-size: 11px; }
-  .hero-title { font-size: 2.2rem; }
-  .mb-title { font-size: 1.8rem; }
-}
 </style>
 </head>
 <body class="lang-bn-active">
@@ -1364,4 +1216,69 @@ footer {
         <span class="lang-bn bn-text" style="font-weight: 800;">কোয়ান্টাম</span>
         <span class="lang-hi hi-text" style="font-weight: 800;">क्वांटम</span>
         <span class="lang-en en-text" style="font-weight: 800;">Quantum</span>
-        <span class="pi
+        <span class="pixel-en">Pixel</span>
+      </a>
+      <div class="nav-msme-tag">
+        <span class="lang-bn bn-text">(সরকার নিবন্ধিত MSME)</span>
+        <span class="lang-hi hi-text">(सरकार पंजीकृत MSME)</span>
+        <span class="lang-en en-text">(A Govt. Registered MSME)</span>
+      </div>
+    </div>
+    
+    <div class="lang-ticket">
+      <button class="lang-btn btn-bn" onclick="setLang('bn')">বাংলা</button>
+      <button class="lang-btn btn-hi" onclick="setLang('hi')">हिंदी</button>
+      <button class="lang-btn btn-en" onclick="setLang('en')">EN</button>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <header class="hero">
+    
+    <!-- Left: Content -->
+    <div class="hero-left">
+      <div class="heritage-badge">
+        <span class="dot-red"></span>
+        <span>Made in Bengal ৾ Crafted for the World</span>
+      </div>
+      
+      <h1 class="hero-title">
+        <span class="lang-bn bn-text">ঐতিহ্যের মাটি থেকে ডিজিটাল শিল্প।</span>
+        <span class="lang-hi hi-text">विरासत की मिट्टी से डिजिटल कला।</span>
+        <span class="lang-en en-text">Digital Craft from Heritage Soil.</span>
+      </h1>
+      
+      <p class="hero-desc">
+        <span class="lang-bn bn-text">পশ্চিমবঙ্গের শৈল্পিক ঐতিহ্যের বুক থেকে জন্ম নেওয়া এক ওয়েব ইঞ্জিনিয়ারিং স্টুডিও। আমরা শুধু ওয়েবসাইট বানাই না, একজন বাঙালি শিল্পীর পরম মমতায় আপনার ব্যবসাকে ডিজিটাল জগতে নির্ভরযোগ্যভাবে গড়ে তুলি।</span>
+        <span class="lang-hi hi-text">पश्चिम बंगाल की कलात्मक विरासत के बीच पैदा हुआ एक वेब इंजीनियरिंग स्टूडियो। हम न केवल वेबसाइट बनाते हैं, बल्कि एक बंगाली कलाकार के समर्पण के साथ आपके व्यवसाय को डिजिटल दुनिया में मज़बूती से ढालते हैं।</span>
+        <span class="lang-en en-text">A web engineering studio born from the artistic legacy of West Bengal. We don't just build websites; we reliably forge your business in the digital world with the devotion of a true artisan.</span>
+      </p>
+      
+      <a href="mailto:hello@quantumpixel.com" class="cta-button">
+        <span class="lang-bn bn-text" style="font-size:18px;">আমাদের সাথে শুরু করুন</span>
+        <span class="lang-hi hi-text" style="font-size:18px;">हमारे साथ शुरुआत करें</span>
+        <span class="lang-en en-text" style="font-size:18px;">Start Building</span>
+      </a>
+    </div>
+
+    <!-- Right: Architecture / Art -->
+    <div class="hero-right">
+      <div class="rajbari-arch">
+        <div class="alpana-motif"></div>
+        <div class="arch-text">
+          <h2 class="arch-headline">
+            <span class="lang-bn bn-text">শিল্প</span>
+            <span class="lang-hi hi-text">कला</span>
+            <span class="lang-en en-text">ART</span>
+          </h2>
+          <h2 class="arch-headline" style="color:var(--terracotta-red); margin-top:-20px;">+</h2>
+          <h2 class="arch-headline" style="margin-top:-20px; font-size: 2.5rem;">
+            <span class="lang-bn bn-text">প্রযুক্তি</span>
+            <span class="lang-hi hi-text">तकनीक</span>
+            <span class="lang-en en-text">TECH</span>
+          </h2>
+          
+          <div class="arch-sub">
+            <span class="lang-bn bn-text" style="font-size:16px;">ডিজিটাল কারিগর</span>
+            <span class="lang-hi hi-text" style="font-size:16px;">डिजिटल शिल्पकार</span>
+            <span class="lang-en en-text" style="font-size:
