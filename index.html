@@ -3,157 +3,338 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quantum Pixel | Digital Artisan Studio</title>
+    <title>Quantum Pixel | Digital Artisans from Bengal</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Noto+Serif+Bengali:wght@400..800&family=Noto+Serif+Devanagari:wght@400..700&family=Space+Grotesk:wght@400..700&display=swap" rel="stylesheet">
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <!-- Lucide Icons (Loaded via script) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
     <style>
-        :root { --color-canvas: #F5F2EB; --color-ink: #1A1816; --color-terracotta: #B93B2B; --color-mustard: #E2A624; --color-indigo: #163240; }
-        body { background-color: var(--color-canvas); color: var(--color-ink); font-family: 'Lora', serif; margin: 0; }
+        :root {
+            --color-canvas: #F5F2EB; --color-ink: #1A1816; --color-terracotta: #B93B2B; --color-mustard: #E2A624; --color-indigo: #163240;
+        }
+        body { background-color: var(--color-canvas); color: var(--color-ink); font-family: 'Lora', serif; overflow-x: hidden; }
         .font-tech { font-family: 'Space Grotesk', sans-serif; }
         .font-bengali { font-family: 'Noto Serif Bengali', serif; }
         .font-hindi { font-family: 'Noto Serif Devanagari', serif; }
         .shadow-heritage { box-shadow: 6px 6px 0px var(--color-ink); }
         .shadow-mustard { box-shadow: 6px 6px 0px var(--color-mustard); }
         .shadow-terracotta { box-shadow: 6px 6px 0px var(--color-terracotta); }
+        .shadow-doubled { box-shadow: 8px 8px 0px var(--color-mustard), 8px 8px 0px 2px var(--color-ink); }
         @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         .animate-marquee { display: flex; animation: scroll 30s linear infinite; }
-        [data-lang]:not(.active-lang) { display: none !important; }
-        .details-card { border: 2px solid var(--color-ink); background: #FFFBF0; transition: all 0.3s; }
-        .details-card:hover { transform: translateY(-5px); box-shadow: 6px 6px 0px var(--color-terracotta); }
+        .bg-dots { background-image: radial-gradient(var(--color-terracotta) 1px, transparent 1px); background-size: 25px 25px; }
+        /* Language handling */
+        body.lang-bn .font-bengali-only { display: block; }
+        body.lang-hi .font-hindi-only { display: block; }
+        .mobile-sidebar { transform: translateX(-100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .mobile-sidebar.open { transform: translateX(0); }
     </style>
 </head>
-<body class="selection:bg-[#B93B2B] selection:text-[#F5F2EB]">
+<body class="lang-en selection:bg-[#B93B2B] selection:text-[#F5F2EB]">
 
-    <div class="max-w-[1400px] mx-auto border-x-2 border-[#1A1816] min-h-screen relative bg-[#F5F2EB]">
+    <!-- Sidebar Overlay -->
+    <div id="overlay" onclick="toggleMenu(false)" class="fixed inset-0 bg-black/60 z-[60] opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-sm"></div>
+
+    <div class="max-w-[1400px] mx-auto border-x-2 border-[#1A1816] bg-[#F5F2EB] relative z-10 min-h-screen">
         
+        <!-- Mobile Sidebar -->
+        <aside id="sidebar" class="mobile-sidebar fixed top-0 left-0 bottom-0 w-[85%] max-w-[350px] bg-[#F5F2EB] border-r-2 border-[#1A1816] z-[70] p-10 flex flex-col gap-10 shadow-[10px_0_0_#E2A624]">
+            <button onclick="toggleMenu(false)" class="self-end hover:text-[#B93B2B]"><i data-lucide="x" class="w-8 h-8"></i></button>
+            <div id="nav-links" class="flex flex-col gap-6 font-bold text-2xl text-[#163240]">
+                <!-- Links filled by JS -->
+            </div>
+            <a href="#contact" onclick="toggleMenu(false)" class="mt-4 bg-[#B93B2B] text-white px-6 py-4 border-2 border-[#1A1816] shadow-heritage text-center font-bold" id="side-contact-btn">Contact</a>
+        </aside>
+
         <!-- Navigation -->
-        <nav class="sticky top-0 z-50 flex items-center justify-between px-4 md:px-10 py-5 border-b-2 border-[#1A1816] bg-[#F5F2EB]">
-            <div class="flex items-center gap-2 sm:gap-4 truncate">
-                <ion-icon name="menu-outline" class="text-3xl cursor-pointer"></ion-icon>
-                <a href="#" class="flex items-center gap-1.5 text-xl md:text-2xl font-bold flex-shrink-0">
-                    <span class="active-lang" data-bn="কোয়ান্টাম" data-hi="क्वांटम" data-en="Quantum">Quantum</span>
-                    <span class="text-[#B93B2B] font-tech italic">Pixel</span>
+        <nav id="navbar" class="sticky top-0 z-50 flex items-center justify-between px-4 md:px-10 py-5 border-b-2 border-[#1A1816] bg-[#F5F2EB] transition-shadow">
+            <div class="flex items-center gap-3 sm:gap-5 flex-shrink">
+                <button onclick="toggleMenu(true)" class="p-1 hover:scale-110 transition-transform">
+                    <i data-lucide="menu" class="w-6 h-6 md:w-7 md:h-7"></i>
+                </button>
+                <a href="#" class="flex items-center gap-1.5 sm:gap-2 text-xl md:text-2xl font-bold tracking-tight text-[#1A1816] whitespace-nowrap">
+                    <span id="nav-brand-main">Quantum</span>
+                    <span class="font-tech text-[#B93B2B]">Pixel</span>
                 </a>
-                <div class="hidden sm:block border-[1.5px] border-[#B93B2B] bg-[#FFFBF0] px-2 py-0.5 text-[9px] md:text-xs font-tech font-bold text-[#B93B2B] uppercase whitespace-nowrap">
-                    <span class="active-lang" data-bn="(সরকার নিবন্ধিত MSME)" data-hi="(सरकार पंजीकृत MSME)" data-en="(A Govt. Registered MSME)">(A Govt. Registered MSME)</span>
+                <div class="hidden sm:block bg-[#FFFBF0] border-[1.5px] border-[#B93B2B] px-2 md:px-3 py-1 text-[9px] md:text-xs font-tech font-bold text-[#B93B2B] uppercase whitespace-nowrap">
+                    <span id="nav-msme-badge"></span>
                 </div>
             </div>
 
-            <div class="flex border-2 border-[#1A1816] bg-[#F5F2EB] shadow-[2px_2px_0px_var(--color-mustard)] flex-shrink-0">
-                <button onclick="setLanguage('en')" class="lang-btn px-2.5 sm:px-4 py-1.5 text-[10px] sm:text-xs font-bold border-r-2 border-[#1A1816] bg-[#1A1816] text-white">EN</button>
-                <button onclick="setLanguage('bn')" class="lang-btn px-2.5 sm:px-4 py-1.5 text-[10px] sm:text-xs font-bold border-r-2 border-[#1A1816]">BN</button>
-                <button onclick="setLanguage('hi')" class="lang-btn px-2.5 sm:px-4 py-1.5 text-[10px] sm:text-xs font-bold font-hindi">HI</button>
+            <div class="flex border-2 border-[#1A1816] bg-[#F5F2EB] overflow-hidden shadow-[2px_2px_0px_#E2A624] sm:shadow-[4px_4px_0px_#E2A624] flex-shrink-0">
+                <button onclick="setLang('en')" id="btn-en" class="px-2.5 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-sm font-bold border-r-2 border-[#1A1816] bg-[#1A1816] text-white">EN</button>
+                <button onclick="setLang('bn')" id="btn-bn" class="px-2.5 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-sm font-bold border-r-2 border-[#1A1816]">BN</button>
+                <button onclick="setLang('hi')" id="btn-hi" class="px-2.5 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-sm font-bold font-hindi">HI</button>
             </div>
         </nav>
 
         <main>
-            <!-- Hero Section -->
+            <!-- Hero -->
             <section class="grid lg:grid-cols-2 border-b-2 border-[#1A1816]">
                 <div class="p-8 md:p-12 lg:p-20 border-r-0 lg:border-r-2 border-[#1A1816] flex flex-col justify-center">
-                    <div class="inline-flex items-center gap-2 px-4 py-1.5 border border-black/20 rounded-full bg-[#E2A624]/10 w-fit mb-8 font-tech text-[10px] uppercase font-bold">
-                        Made in Bengal ৾ Crafted for the World
+                    <div class="inline-flex items-center gap-3 px-4 py-1.5 border border-black/20 rounded-full bg-[#E2A624]/10 w-fit mb-8 font-tech text-[10px] sm:text-xs uppercase tracking-widest font-bold">
+                        <span class="w-2 h-2 bg-[#B93B2B] rounded-full animate-pulse"></span>
+                        <span id="hero-badge"></span>
                     </div>
-                    <h1 class="text-[2.8rem] sm:text-[4rem] lg:text-[4.5rem] font-bold leading-[1.1] text-[#163240] mb-6">
-                        <span class="active-lang" data-bn="ঐতিহ্যের মাটি থেকে ডিজিটাল শিল্প।" data-hi="विरासत की मिट्टी से डिजिटल कला।" data-en="Digital Craft from Heritage Soil.">Digital Craft from Heritage Soil.</span>
-                    </h1>
-                    <p class="text-lg md:text-xl text-black/80 max-w-lg mb-10 leading-relaxed">
-                        <span class="active-lang" data-bn="পশ্চিমবঙ্গের শৈল্পিক ঐতিহ্যের বুক থেকে জন্ম নেওয়া এক ওয়েব ইঞ্জিনিয়ারিং স্টুডিও।" data-hi="पश्चिम बंगाल की कलात्मक विरासत के बीच पैदा हुआ एक वेब इंजीनियरिंग स्टूडियो।" data-en="A web engineering studio born from the artistic legacy of West Bengal.">A web engineering studio born from the artistic legacy of West Bengal.</span>
-                    </p>
-                    <a href="#contact" class="w-fit bg-[#B93B2B] text-white border-2 border-[#1A1816] px-8 py-4 text-lg font-bold shadow-heritage hover:-translate-y-1 transition-all">
-                        <span class="active-lang" data-bn="আমাদের সাথে শুরু করুন" data-hi="हमारे साथ शुरुआत करें" data-en="Start Building">Start Building</span>
-                    </a>
+                    <h1 id="hero-title" class="text-[2.8rem] sm:text-[4rem] lg:text-[4.5rem] font-bold leading-[1.1] text-[#163240] mb-6"></h1>
+                    <p id="hero-desc" class="text-lg md:text-xl text-black/80 max-w-lg mb-10 leading-relaxed font-serif"></p>
+                    <a href="#contact" id="hero-cta" class="w-fit bg-[#B93B2B] text-white border-2 border-[#1A1816] px-8 py-4 text-lg font-bold shadow-heritage hover:-translate-y-1 transition-all"></a>
                 </div>
-                <div class="p-10 md:p-20 bg-[radial-gradient(#B93B2B_1px,transparent_1px)] bg-[length:25px_25px] flex items-center justify-center">
-                    <div class="w-full max-w-[350px] aspect-[4/5] bg-[#E2A624] border-2 border-[#1A1816] rounded-t-full shadow-heritage flex flex-col items-center justify-center p-10 text-center">
-                        <ion-icon name="color-palette-outline" class="text-7xl text-[#163240] mb-6 animate-bounce"></ion-icon>
-                        <div class="text-4xl font-bold text-[#163240]">ART + TECH</div>
-                        <div class="mt-4 pt-4 border-t-2 border-[#163240] font-tech text-xs uppercase font-bold">Digital Artisans</div>
+                <div class="p-10 md:p-20 bg-dots flex items-center justify-center overflow-hidden">
+                    <div class="relative w-full max-w-[400px] aspect-[4/5.5] bg-[#E2A624] border-2 border-[#1A1816] rounded-t-full shadow-heritage flex flex-col items-center justify-center p-10 text-center">
+                        <div class="text-[#163240] flex flex-col items-center gap-2">
+                            <div class="text-5xl md:text-6xl font-bold" id="card-art">ART</div>
+                            <div class="text-6xl font-bold text-[#B93B2B] -my-4">+</div>
+                            <div class="text-4xl md:text-5xl font-bold" id="card-tech">TECH</div>
+                            <div class="mt-10 pt-4 border-t-2 border-[#163240] w-full font-tech uppercase tracking-widest text-sm font-bold" id="card-sub">Digital Artisan</div>
+                        </div>
                     </div>
                 </div>
             </section>
 
             <!-- Marquee -->
             <div class="bg-[#1A1816] text-white py-6 overflow-hidden border-b-2 border-[#1A1816]">
-                <div class="animate-marquee gap-10">
-                    <div class="flex items-center gap-10 text-xl font-tech font-bold uppercase whitespace-nowrap">
-                        <span class="active-lang" data-bn="বাংলার ডিজিটাল নবজাগরণ" data-hi="बंगाल का डिजिटल पुनर्जागरण" data-en="DIGITAL RENAISSANCE OF BENGAL">DIGITAL RENAISSANCE</span> <span class="text-[#E2A624]">✽</span>
-                        <span class="active-lang" data-bn="বাংলার ডিজিটাল নবজাগরণ" data-hi="बंगाल का डिजिटल पुनर्जागरण" data-en="DIGITAL RENAISSANCE OF BENGAL">DIGITAL RENAISSANCE</span> <span class="text-[#E2A624]">✽</span>
-                    </div>
-                    <div class="flex items-center gap-10 text-xl font-tech font-bold uppercase whitespace-nowrap">
-                        <span class="active-lang" data-bn="বাংলার ডিজিটাল নবজাগরণ" data-hi="बंगाल का ডিজিটাল पुनर्जागरण" data-en="DIGITAL RENAISSANCE OF BENGAL">DIGITAL RENAISSANCE</span> <span class="text-[#E2A624]">✽</span>
-                        <span class="active-lang" data-bn="বাংলার ডিজিটাল নবজাগরণ" data-hi="बंगाल का ডিজিটাল पुनर्जागरण" data-en="DIGITAL RENAISSANCE OF BENGAL">DIGITAL RENAISSANCE</span> <span class="text-[#E2A624]">✽</span>
-                    </div>
-                </div>
+                <div class="animate-marquee gap-10" id="marquee-container"></div>
             </div>
 
-            <!-- Process Section -->
-            <section class="p-8 md:p-20 border-b-2 border-[#1A1816]">
-                <h2 class="text-4xl md:text-5xl font-bold text-[#163240] text-center mb-16">
-                    <span class="active-lang" data-bn="নির্মাণ প্রণালী" data-hi="निर्माण प्रक्रिया" data-en="The Crafting Process">The Crafting Process</span>
-                </h2>
-                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="details-card p-8">
-                        <div class="text-4xl font-bold text-[#B93B2B]/30 mb-4 font-tech">01</div>
-                        <h3 class="text-xl font-bold mb-2">Discovery</h3>
-                        <p class="text-sm opacity-80">Deeply understanding your brands roots and target audience.</p>
-                    </div>
-                    <div class="details-card p-8">
-                        <div class="text-4xl font-bold text-[#B93B2B]/30 mb-4 font-tech">02</div>
-                        <h3 class="text-xl font-bold mb-2">Milestones</h3>
-                        <p class="text-sm opacity-80">Zero-risk development. Pay only after approving the work.</p>
-                    </div>
-                    <div class="details-card p-8">
-                        <div class="text-4xl font-bold text-[#B93B2B]/30 mb-4 font-tech">03</div>
-                        <h3 class="text-xl font-bold mb-2">Secure Dev</h3>
-                        <p class="text-sm opacity-80">Modern coding standards with absolute SSL data encryption.</p>
-                    </div>
-                    <div class="details-card p-8">
-                        <div class="text-4xl font-bold text-[#B93B2B]/30 mb-4 font-tech">04</div>
-                        <h3 class="text-xl font-bold mb-2">Launch</h3>
-                        <p class="text-sm opacity-80">World-wide release with 100% ownership handed over to you.</p>
-                    </div>
+            <!-- Philosophy -->
+            <section id="philosophy" class="grid lg:grid-cols-2 border-b-2 border-[#1A1816] overflow-hidden">
+                <div class="p-10 lg:p-20 bg-[#E2A624] border-r-0 lg:border-r-2 border-[#1A1816] flex flex-col justify-center">
+                    <span class="text-8xl text-[#B93B2B] font-tech leading-none -mb-6">❝</span>
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-[#163240] leading-tight" id="philosophy-quote"></h2>
+                </div>
+                <div class="p-10 lg:p-20 bg-[#163240] text-white flex flex-col justify-center">
+                    <h3 class="text-3xl font-bold text-[#E2A624] mb-8" id="philosophy-title"></h3>
+                    <p class="text-xl leading-relaxed opacity-90 font-serif" id="philosophy-text"></p>
                 </div>
             </section>
 
-            <!-- Trust Section -->
-            <section class="p-8 md:p-20 bg-[#FFFBF0] border-b-2 border-[#1A1816]">
-                <h2 class="text-4xl md:text-5xl font-bold text-[#163240] text-center mb-12">Why Trust Us?</h2>
-                <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                    <div class="p-8 border-2 border-black bg-white shadow-heritage">
-                        <ion-icon name="checkmark-circle-outline" class="text-4xl text-[#B93B2B] mb-4"></ion-icon>
-                        <h3 class="text-xl font-bold mb-2">Verified & Legal</h3>
-                        <p class="text-sm opacity-70">A Govt. Registered MSME with a verified GSTIN.</p>
-                    </div>
-                    <div class="p-8 border-2 border-black bg-white shadow-heritage">
-                        <ion-icon name="lock-closed-outline" class="text-4xl text-[#B93B2B] mb-4"></ion-icon>
-                        <h3 class="text-xl font-bold mb-2">Full Ownership</h3>
-                        <p class="text-sm opacity-70">You own 100% of the code. No hidden fees or locks.</p>
-                    </div>
+            <!-- Services -->
+            <section id="services" class="p-8 md:p-20">
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-[#163240] mb-16" id="services-title"></h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="services-grid"></div>
+            </section>
+
+            <!-- Portfolio -->
+            <section id="portfolio" class="p-8 md:p-20 bg-[#1A1816] text-white border-y-2 border-[#1A1816]">
+                <h2 class="text-4xl md:text-5xl font-extrabold tracking-tighter text-[#E2A624] pb-6 mb-12 border-b-2 border-white/20" id="portfolio-title"></h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="portfolio-grid"></div>
+            </section>
+
+            <!-- Process -->
+            <section id="process" class="p-8 md:p-20 border-b-2 border-[#1A1816]">
+                <h2 class="text-4xl md:text-5xl font-bold text-[#163240] text-center mb-16" id="process-title"></h2>
+                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8" id="process-grid"></div>
+            </section>
+
+            <!-- Trust -->
+            <section id="trust" class="p-8 md:p-20 bg-[#FFFBF0] border-b-2 border-[#1A1816]">
+                <h2 class="text-4xl md:text-5xl font-bold text-[#163240] text-center mb-16" id="trust-title"></h2>
+                <div class="grid sm:grid-cols-2 gap-8 max-w-5xl mx-auto" id="trust-grid"></div>
+            </section>
+
+            <!-- FAQ -->
+            <section id="faq" class="p-8 md:p-20 border-b-2 border-[#1A1816] bg-[#F5F2EB]">
+                <h2 class="text-4xl md:text-5xl font-bold text-[#1A1816] mb-12" id="faq-title"></h2>
+                <div class="flex flex-col gap-4 max-w-3xl" id="faq-container"></div>
+            </section>
+
+            <!-- Contact -->
+            <section id="contact" class="p-8 md:p-20 bg-[#F5F2EB]">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold text-[#163240] mb-4" id="contact-title"></h2>
+                    <p class="text-xl text-black/70" id="contact-subtitle"></p>
                 </div>
+                <div class="flex flex-col md:flex-row gap-6 max-w-screen-md mx-auto mb-12" id="contact-certs"></div>
+                <form class="max-w-screen-md mx-auto p-8 md:p-12 border-2 border-[#1A1816] bg-[#FFFBF0] shadow-doubled">
+                    <div class="grid md:grid-cols-2 gap-8 mb-8" id="contact-form-inputs"></div>
+                    <div class="flex flex-col gap-2 mb-10">
+                        <label class="font-tech text-xs font-bold text-[#163240] uppercase tracking-widest" id="label-message"></label>
+                        <textarea required rows="5" class="bg-transparent border-2 border-[#1A1816] p-4 font-serif outline-none focus:bg-white focus:shadow-[4px_4px_0px_#B93B2B] transition-all resize-none"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-[#B93B2B] text-white border-2 border-[#1A1816] p-6 font-bold uppercase tracking-widest hover:brightness-110 active:scale-95 transition-all shadow-[4px_4px_0px_#1A1816] flex items-center justify-center gap-3">
+                        <span class="text-lg" id="btn-submit-text"></span>
+                        <i data-lucide="arrow-up-right"></i>
+                    </button>
+                </form>
             </section>
         </main>
 
-        <!-- Footer -->
         <footer class="py-16 px-8 border-t-2 border-[#1A1816] bg-[#163240] text-white text-center">
-            <div class="text-3xl font-bold mb-4">Quantum <span class="text-[#E2A624] font-tech italic">Pixel</span></div>
-            <p class="text-[10px] uppercase tracking-widest opacity-60">© 2026 THE DIGITAL ARTISANS OF BENGAL.</p>
+            <div class="text-3xl font-bold mb-4" id="footer-logo"></div>
+            <p class="font-tech text-xs uppercase tracking-[0.2em] opacity-60">© 2026 The Digital Artisans of Bengal.</p>
         </footer>
     </div>
 
+    <!-- Data -->
     <script>
-        function setLanguage(lang) {
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.classList.remove('bg-[#1A1816]', 'text-white');
-                if(btn.innerText.toLowerCase() === lang) btn.classList.add('bg-[#1A1816]', 'text-white');
-            });
-            document.querySelectorAll('.active-lang').forEach(el => {
-                el.innerText = el.getAttribute('data-' + lang);
-            });
-            document.body.classList.remove('font-bengali', 'font-hindi');
-            if(lang === 'bn') document.body.classList.add('font-bengali');
-            if(lang === 'hi') document.body.classList.add('font-hindi');
+        const TRANSLATIONS = {
+            en: {
+                nav: { logo: "Quantum", logoLast: "Pixel", philosophy: 'Philosophy', services: 'Services', portfolio: 'Portfolio', process: 'Process', tech: 'Tech', trust: 'Why Trust Us?', faq: 'FAQ', contact: 'Contact' },
+                hero: { badge: 'Made in Bengal ৾ Crafted for the World', title: 'Digital Craft from Heritage Soil.', description: "A web engineering studio born from the artistic legacy of West Bengal. We don't just build websites; we reliably forge your business.", cta: 'Start Building', art: "ART", tech: "TECH", sub: "Digital Artisan" },
+                marquee: 'DIGITAL RENAISSANCE OF BENGAL',
+                phil: { quote: 'If technology is the canvas, design is our brushstroke.', title: 'Our Philosophy', text: 'We believe every business has its own unique story. Inspired by West Bengal\'s rich heritage, we build websites that touch hearts.' },
+                serv: { title: 'Our Craftsmanship', items: [{ t: 'Design', d: 'Aesthetic interfaces inspired by Bengal’s Alpana.', tag: 'UI/UX' }, { t: 'Engineering', d: 'Infrastructure as robust as the Howrah Bridge.', tag: 'Arch' }, { t: 'Scale', d: 'Strategies to expand from Kolkata to the globe.', tag: 'SEO' }] },
+                port: { title: 'Selected Works', items: [{ t: 'E-Commerce', d: 'High-speed secure shopping.', tag: 'SHOP' }, { t: 'Corporate', d: 'Professional brand portfolio.', tag: 'BRAND' }, { t: 'Web App', d: 'Complex custom dashboards.', tag: 'APP' }] },
+                proc: { title: 'The Crafting Process', steps: [{ t: 'Discovery', d: 'Understanding your goals.' }, { t: 'Milestones', d: 'Zero-risk payment workflow.' }, { t: 'Secure Dev', d: 'Flawless SSL coding.' }, { t: 'Launch', d: '100% code ownership.' }] },
+                trst: { title: 'Why Trust Us?', items: [{ t: 'Verified & Legal', d: 'A Govt. Registered MSME with valid GSTIN.' }, { t: 'SSL Secure', d: 'Rank-boosting enterprise security.' }, { t: 'Zero-Risk', d: 'Pay after you approve our work.' }, { t: 'Full Ownership', d: 'No hidden fees or vendor lock-in.' }] },
+                faq: { title: 'FAQ', items: [{ q: 'How long?', a: '2 to 4 weeks typically.' }, { q: 'Support?', a: 'Full maintenance provided.' }] },
+                cont: { title: 'Connect With Us', sub: 'Send us a message.', msme: 'A Govt. Registered MSME', gst: 'Verified GSTIN', labels: { name: 'Name', email: 'Email', msg: 'Message', sub: 'Send Message' } }
+            },
+            bn: {
+                nav: { logo: "কোয়ান্টাম", logoLast: "Pixel", philosophy: 'দর্শন', services: 'পরিষেবাদি', portfolio: 'কাজ', process: 'প্রণালী', tech: 'প্রযুক্তি', trust: 'আস্থা', faq: 'জিজ্ঞাস্য', contact: 'যোগাযোগ' },
+                hero: { badge: 'Made in Bengal ৾ Crafted for the World', title: 'ঐতিহ্যের মাটি থেকে ডিজিটাল শিল্প।', description: 'পশ্চিমবঙ্গের শিল্প ঐতিহ্যের বুক থেকে জন্ম নেওয়া এক ওয়েব ইঞ্জিনিয়ারিং স্টুডিও।', cta: 'শুরু করুন', art: "শিল্প", tech: "প্রযুক্তি", sub: "ডিজিটাল কারিগর" },
+                marquee: 'বাংলার ডিজিটাল নবজাগরণ',
+                phil: { quote: 'প্রযুক্তি ক্যানভাস হলে, ডিজাইন হলো আমাদের তুলির আঁচড়।', title: 'আমাদের দর্শন', text: 'আমরা বিশ্বাস করি প্রতিটি ব্যবসার গল্প অনন্য। বাংলার ঐতিহ্য নিয়ে আমরা হৃদয়স্পর্শী সাইট তৈরি করি।' },
+                serv: { title: 'আমাদের দক্ষতা', items: [{ t: 'নকশা', d: 'বাংলার আলপনা অনুপ্রাণিত ইন্টারফেস।', tag: 'UI/UX' }, { t: 'প্রকৌশল', d: 'হাওড়া ব্রিজের মতো শক্তিশালী পরিকাঠামো।', tag: 'Arch' }, { t: 'প্রসার', d: 'বিশ্বমঞ্চে প্রসারের কৌশল।', tag: 'SEO' }] },
+                port: { title: 'নির্বাচিত কাজ', items: [{ t: 'ই-কমার্স', d: 'নিরাপদ অনলাইন স্টোর।', tag: 'SHOP' }, { t: 'কর্পোরেট', d: 'পেশাদার পোর্টফোলিও।', tag: 'BRAND' }, { t: 'ওয়েব অ্যাপ', d: 'কাস্টম ড্যাশবোর্ড।', tag: 'APP' }] },
+                proc: { title: 'নির্মাণ প্রণালী', steps: [{ t: 'অনুসন্ধান', d: 'আপনার লক্ষ্য বোঝা।' }, { t: 'মাইলফলক', d: 'ঝুঁকিমুক্ত পেমেন্ট।' }, { t: 'নিরাপদ কোড', d: 'SSL এনক্রিপশন।' }, { t: 'উন্মোচন', d: '১০০% মালিকানা হস্তান্তর।' }] },
+                trst: { title: 'কেন আস্থা রাখবেন?', items: [{ t: 'যাচাইকৃত', d: 'সরকার নিবন্ধিত MSME এবং GSTIN।' }, { t: 'সুরক্ষিত', d: 'উচ্চমানের SSL সুরক্ষা।' }, { t: 'ঝুঁকিহীন', d: 'কাজের সন্তুষ্টির পর পেমেন্ট।' }, { t: 'মালিকানা', d: 'সম্পদ ও কোডের পূর্ণ মালিকানা।' }] },
+                faq: { title: 'জিজ্ঞাস্য', items: [{ q: 'কত সময় লাগে?', a: '২ থেকে ৪ সপ্তাহ।' }, { q: 'সহায়তা?', a: 'পূর্ণ রক্ষণাবেক্ষণ সহায়তা প্রদান করি।' }] },
+                cont: { title: 'যুক্ত হোন', sub: 'আমাদের বার্তা পাঠান।', msme: 'সরকার নিবন্ধিত MSME', gst: 'জিএসটিআইএন', labels: { name: 'নাম', email: 'ইমেইল', msg: 'বার্তা', sub: 'পাঠান' } }
+            },
+            hi: {
+                nav: { logo: "क्वांटम", logoLast: "Pixel", philosophy: 'दर्शन', services: 'सेवाएं', portfolio: 'काम', process: 'प्रक्रिया', tech: 'तकनीक', trust: 'भरोसा', faq: 'प्रश्न', contact: 'संपर्क' },
+                hero: { badge: 'Made in Bengal ৾ Crafted for the World', title: 'विरासत की मिट्टी से डिजिटल कला।', description: 'बंगाल की विरासत के बीच पैदा हुआ एक वेब इंजीनियरिंग स्टूडियो।', cta: 'शुरू करें', art: "कला", tech: "तकनीक", sub: "डिजिटल शिल्पकार" },
+                marquee: 'बंगाल का डिजिटल पुनर्जागरण',
+                phil: { quote: 'तकनीक यदि कैनवास है, तो डिज़ाइन हमारे ब्रश का स्पर्श है।', title: 'हमारा दर्शन', text: 'हम बंगाल की सांस्कृतिक विरासत से प्रेरित होकर दिल छू लेने वाली वेबसाइट बनाते हैं।' },
+                serv: { title: 'हमारा शिल्प', items: [{ t: 'डिजाइन', d: 'अल्पना से प्रेरित इंटरफेस।', tag: 'UI/UX' }, { t: 'इंजीनियरिंग', d: 'हावड़ा ब्रिज जैसा मजबूत ढांचा।', tag: 'Arch' }, { t: 'विस्तार', d: 'वैश्विक विस्तार की रणनीति।', tag: 'SEO' }] },
+                port: { title: 'चुनिंदा काम', items: [{ t: 'ई-कॉमर्स', d: 'सुरक्षित ऑनलाइन स्टोर।', tag: 'SHOP' }, { t: 'कॉर्पोरेट', d: 'प्रोफेशनल पोर्टफोलियो।', tag: 'BRAND' }, { t: 'वेब ऐप', d: 'कस्टम डैशबोर्ड।', tag: 'APP' }] },
+                proc: { title: 'निर्माण प्रक्रिया', steps: [{ t: 'अनुसंधान', d: 'लक्ष्यों को समझना।' }, { t: 'माइलस्टोन', d: 'जोखिम-मुक्त भुगतान।' }, { t: 'सुरक्षित देव', d: 'SSL एन्क्रिप्शन।' }, { t: 'लॉन्च', d: '100% स्वामित्व।' }] },
+                trst: { title: 'क्यों भरोसा करें?', items: [{ t: 'सत्यापित', d: 'सरकार पंजीकृत MSME और GSTIN।' }, { t: 'सुरक्षित', d: 'SSL एन्क्रिप्शन सुरक्षा।' }, { t: 'शून्य-जोखিম', d: 'मंजूरी के बाद भुगतान।' }, { t: 'स्वामित्व', d: '100% कोड स्वामित्व।' }] },
+                faq: { title: 'प्रश्न', items: [{ q: 'कितना समय?', a: '2 से 4 सप्ताह।' }, { q: 'सहायता?', a: 'पूर्ण रखरखाव सहायता।' }] },
+                cont: { title: 'संपर्क करें', sub: 'हमें संदेश भेजें।', msme: 'सरकार पंजीकृत MSME', gst: 'जीएसटीआईएन', labels: { name: 'नाम', email: 'ईमेल', msg: 'संदेश', sub: 'भेजें' } }
+            }
+        };
+
+        let currentLang = 'en';
+
+        function toggleMenu(open) {
+            document.getElementById('sidebar').classList.toggle('open', open);
+            document.getElementById('overlay').classList.toggle('opacity-100', open);
+            document.getElementById('overlay').classList.toggle('pointer-events-auto', open);
         }
+
+        function setLang(lang) {
+            currentLang = lang;
+            document.body.className = `lang-${lang} selection:bg-[#B93B2B] selection:text-[#F5F2EB] ` + (lang === 'bn' ? 'font-bengali' : lang === 'hi' ? 'font-hindi' : 'font-serif');
+            
+            // Highlight Buttons
+            ['en', 'bn', 'hi'].forEach(l => {
+                const btn = document.getElementById(`btn-${l}`);
+                btn.className = `px-2.5 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-sm font-bold border-r-2 last:border-r-0 border-[#1A1816] ${l === lang ? 'bg-[#1A1816] text-white' : 'bg-transparent text-[#1A1816]'}`;
+            });
+
+            renderContent();
+        }
+
+        function renderContent() {
+            const data = TRANSLATIONS[currentLang];
+            
+            // Nav
+            document.getElementById('nav-brand-main').innerText = data.nav.logo;
+            document.getElementById('nav-msme-badge').innerText = `(${data.cont.msme})`;
+            
+            // Links & Sidebar
+            const linkKeys = ['philosophy', 'services', 'portfolio', 'process', 'tech', 'trust', 'faq'];
+            const sidebarLinks = document.getElementById('nav-links');
+            sidebarLinks.innerHTML = linkKeys.map(k => `<a href="#${k}" onclick="toggleMenu(false)" class="hover:text-[#B93B2B] hover:translate-x-2 transition-all">${data.nav[k]}</a>`).join('');
+            document.getElementById('side-contact-btn').innerText = data.nav.contact;
+
+            // Hero
+            document.getElementById('hero-badge').innerText = data.hero.badge;
+            document.getElementById('hero-title').innerText = data.hero.title;
+            document.getElementById('hero-desc').innerText = data.hero.description;
+            document.getElementById('hero-cta').innerText = data.hero.cta;
+            document.getElementById('card-art').innerText = data.hero.art;
+            document.getElementById('card-tech').innerText = data.hero.tech;
+            document.getElementById('card-sub').innerText = data.hero.sub;
+
+            // Marquee
+            document.getElementById('marquee-container').innerHTML = `<div class="flex gap-10 whitespace-nowrap">${[...Array(6)].map(() => `<div class="flex items-center gap-10 text-lg sm:text-xl font-tech font-bold uppercase tracking-wider"><span>${data.marquee}</span><span class="text-[#E2A624]">✽</span></div>`).join('')}</div>`;
+
+            // Phil
+            document.getElementById('philosophy-quote').innerText = data.phil.quote;
+            document.getElementById('philosophy-title').innerText = data.phil.title;
+            document.getElementById('philosophy-text').innerText = data.phil.text;
+
+            // Grids
+            document.getElementById('services-title').innerText = data.serv.title;
+            document.getElementById('services-grid').innerHTML = data.serv.items.map((it, i) => `
+                <div class="flex flex-col border-2 border-[#1A1816] bg-white shadow-heritage hover:shadow-terracotta translate-y-0 transition-all hover:-translate-y-1 p-10">
+                    <h3 class="text-3xl font-bold mb-4">${it.t}</h3>
+                    <p class="text-lg opacity-80">${it.d}</p>
+                    <div class="mt-Auto pt-6 font-tech text-xs font-bold uppercase tracking-widest">${it.tag}</div>
+                </div>`).join('');
+
+            document.getElementById('portfolio-title').innerText = data.port.title;
+            document.getElementById('portfolio-grid').innerHTML = data.port.items.map(it => `
+                <div class="border-2 border-white p-6 hover:bg-white hover:text-black transition-all">
+                    <div class="aspect-video bg-[#163240] border-2 border-white mb-6 flex items-center justify-center font-tech font-bold text-white">${it.tag}</div>
+                    <h3 class="text-2xl font-bold mb-3">${it.t}</h3>
+                    <p class="opacity-70">${it.d}</p>
+                </div>`).join('');
+
+            document.getElementById('process-title').innerText = data.proc.title;
+            document.getElementById('process-grid').innerHTML = data.proc.steps.map((s, i) => `
+                <div class="p-8 border-2 border-[#1A1816] bg-[#FFFBF0] shadow-mustard hover:shadow-terracotta transition-all">
+                    <span class="text-5xl font-bold text-[#B93B2B]/30 mb-6 block">০${i+1}</span>
+                    <h3 class="text-xl font-bold mb-4">${s.t}</h3>
+                    <p class="opacity-80">${s.d}</p>
+                </div>`).join('');
+
+            document.getElementById('trust-title').innerText = data.trst.title;
+            document.getElementById('trust-grid').innerHTML = data.trst.items.map((it, i) => `
+                <div class="p-8 border-2 border-[#1A1816] bg-white shadow-mustard hover:shadow-terracotta transition-all">
+                    <div class="text-3xl font-bold text-[#B93B2B] mb-5 border-b-4 border-[#163240] inline-block font-tech">0${i+1}</div>
+                    <h3 class="text-xl font-bold mb-3">${it.t}</h3>
+                    <p class="opacity-70">${it.d}</p>
+                </div>`).join('');
+
+            // FAQ
+            document.getElementById('faq-title').innerText = data.faq.title;
+            document.getElementById('faq-container').innerHTML = data.faq.items.map(it => `
+                <details class="group border-2 border-[#1A1816] p-6 bg-[#FFFBF0] open:bg-[#E2A624] transition-all cursor-pointer">
+                    <summary class="flex justify-between font-bold text-xl list-none"><span>${it.q}</span><span>+</span></summary>
+                    <div class="mt-4 pt-4 border-t border-[#1A1816] opacity-90">${it.a}</div>
+                </details>`).join('');
+
+            // Contact
+            document.getElementById('contact-title').innerText = data.cont.title;
+            document.getElementById('contact-subtitle').innerText = data.cont.sub;
+            document.getElementById('contact-certs').innerHTML = `
+                <div class="flex-1 p-6 border-2 border-[#1A1816] bg-white shadow-terracotta flex items-center gap-4">
+                    <div><span class="block text-[10px] font-tech font-bold uppercase mb-1">${data.cont.msme}</span><span class="font-bold">UDYAM-WB-18-0186128</span></div>
+                </div>
+                <div class="flex-1 p-6 border-2 border-[#1A1816] bg-white shadow-heritage flex items-center gap-4">
+                    <div><span class="block text-[10px] font-tech font-bold uppercase mb-1">${data.cont.gst}</span><span class="font-bold">19BDYPL9210K1ZR</span></div>
+                </div>`;
+            document.getElementById('contact-form-inputs').innerHTML = `
+                <div class="flex flex-col gap-2"><label class="font-tech text-xs uppercase font-bold text-[#163240]">${data.cont.labels.name}</label><input required class="bg-transparent border-2 border-[#1A1816] p-4 outline-none focus:bg-white" /></div>
+                <div class="flex flex-col gap-2"><label class="font-tech text-xs uppercase font-bold text-[#163240]">${data.cont.labels.email}</label><input required type="email" class="bg-transparent border-2 border-[#1A1816] p-4 outline-none focus:bg-white" /></div>`;
+            document.getElementById('label-message').innerText = data.cont.labels.msg;
+            document.getElementById('btn-submit-text').innerText = data.cont.labels.sub;
+            
+            // Footer
+            document.getElementById('footer-logo').innerHTML = `<span>${data.nav.logo}</span><span class="text-[#E2A624] font-tech ml-2">Pixel</span>`;
+            
+            // Refresh Icons
+            lucide.createIcons();
+        }
+
+        // Initial render
+        window.addEventListener('scroll', () => {
+            document.getElementById('navbar').classList.toggle('shadow-md', window.scrollY > 20);
+        });
+        setLang('en');
     </script>
+
+    <!-- WhatsApp Float -->
+    <a href="https://wa.me/911234567890" target="_blank" class="fixed bottom-8 right-8 w-16 h-16 bg-[#25D366] text-white rounded-full flex items-center justify-center border-2 border-black shadow-heritage z-[100] hover:-translate-y-2 transition-all">
+        <i data-lucide="message-circle" class="w-9 h-9"></i>
+    </a>
 </body>
 </html>
