@@ -789,6 +789,188 @@ footer {
   .lang-btn { padding: 7px 9px; font-size: 11px; }
   .hero-title { font-size: 2.2rem; }
 }
+
+/* ── CERTIFICATE MODAL (Premium Popup) ── */
+.cert-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(14, 18, 14, 0.75);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.cert-modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.cert-modal-box {
+  background: var(--bg-canvas);
+  border: var(--border-thick);
+  box-shadow: 12px 12px 0px var(--taxi-mustard), 14px 14px 0px 2px var(--ink-black);
+  max-width: 560px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  transform: translateY(30px) scale(0.96);
+  transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.cert-modal-overlay.active .cert-modal-box {
+  transform: translateY(0) scale(1);
+}
+.cert-modal-header {
+  background: var(--river-indigo);
+  padding: 22px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: var(--border-thick);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+.cert-modal-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--taxi-mustard);
+}
+.cert-modal-badge {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: var(--taxi-mustard);
+  color: var(--ink-black);
+  padding: 4px 10px;
+}
+.cert-modal-close {
+  background: transparent;
+  border: none;
+  color: var(--bg-canvas);
+  font-size: 26px;
+  cursor: pointer;
+  line-height: 1;
+  margin-left: 16px;
+  transition: color 0.2s, transform 0.2s;
+  padding: 0 4px;
+}
+.cert-modal-close:hover { color: var(--taxi-mustard); transform: rotate(90deg); }
+.cert-modal-body {
+  padding: 28px;
+}
+.cert-modal-mock {
+  border: 2px solid #ccc;
+  background: #fff;
+  padding: 22px;
+  font-size: 0.85rem;
+  color: #333;
+  position: relative;
+  margin-bottom: 20px;
+}
+.cert-modal-mock-header {
+  text-align: center;
+  border-bottom: 2px solid var(--river-indigo);
+  padding-bottom: 14px;
+  margin-bottom: 18px;
+  font-family: 'Space Grotesk', sans-serif;
+}
+.cert-modal-gov { font-size: 0.7rem; font-weight: 600; color: #555; text-transform: uppercase; letter-spacing: 0.08em; }
+.cert-modal-doc-title { font-size: 1.05rem; font-weight: 800; color: var(--river-indigo); margin: 5px 0; }
+.cert-modal-row { display: flex; gap: 10px; margin-bottom: 9px; font-size: 0.82rem; align-items: center; flex-wrap: wrap; }
+.cert-modal-label { font-weight: 700; color: var(--river-indigo); min-width: 115px; font-family: 'Space Grotesk', sans-serif; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.cert-modal-val { color: #222; }
+.cert-modal-blurred {
+  filter: blur(6px);
+  user-select: none;
+  pointer-events: none;
+  background: #e0e0e0;
+  border-radius: 3px;
+  color: transparent !important;
+  padding: 0 4px;
+}
+.cert-modal-blurred-block {
+  filter: blur(8px);
+  user-select: none;
+  pointer-events: none;
+  background: #ddd;
+  height: 14px;
+  border-radius: 3px;
+  display: inline-block;
+  width: 180px;
+}
+.cert-modal-blur-notice {
+  display: block;
+  margin-top: 12px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.65rem;
+  color: #999;
+  font-style: italic;
+  text-align: right;
+}
+.cert-modal-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  background: #FFFBF0;
+  border: var(--border-thin);
+  padding: 18px;
+  margin-bottom: 20px;
+}
+.cert-modal-info-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--river-indigo);
+  margin-bottom: 3px;
+}
+.cert-modal-info-value {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--ink-black);
+  word-break: break-all;
+}
+.cert-modal-verify-btn {
+  display: block;
+  width: 100%;
+  background: var(--terracotta-red);
+  color: var(--bg-canvas);
+  border: var(--border-thick);
+  padding: 15px 20px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 4px 4px 0px var(--ink-black);
+  transition: all 0.2s;
+}
+.cert-modal-verify-btn:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0px var(--ink-black); background: #a03022; }
+.cert-modal-verify-btn:active { transform: translate(2px,2px); box-shadow: 1px 1px 0px var(--ink-black); }
+
+/* Make contact badges clickable */
+.udyam-badge { cursor: pointer; }
+
+@media (max-width: 600px) {
+  .cert-modal-info-grid { grid-template-columns: 1fr; }
+  .cert-modal-body { padding: 18px; }
+  .cert-modal-mock { padding: 16px; }
+}
 </style>
 </head>
 <body class="lang-bn-active">
@@ -1284,13 +1466,13 @@ footer {
       </div>
 
       <div class="badges-container">
-        <div class="udyam-badge">
+        <div class="udyam-badge" onclick="openCertModal('udyam')" title="Click to view Udyam Certificate">
           <div>
             <span class="udyam-label">Udyam Registration</span>
             <span class="udyam-number">UDYAM-WB-18-0186128</span>
           </div>
         </div>
-        <div class="udyam-badge gst">
+        <div class="udyam-badge gst" onclick="openCertModal('gst')" title="Click to view GST Certificate">
           <div>
             <span class="udyam-label">GST Number</span>
             <span class="udyam-number">19BDYPL9210K1ZR</span>
@@ -1603,14 +1785,14 @@ footer {
 
     <!-- COMPLIANCE BADGES IN FOOTER -->
     <div class="footer-badges">
-      <span class="footer-badge" onclick="navigateTo('compliance')" title="View MSME Certificate">
+      <span class="footer-badge" onclick="openCertModal('udyam')" title="View MSME Certificate">
         <span class="footer-badge-icon">🏛️</span>
         <span>
           <span class="footer-badge-text-main">MSME Registered</span>
           <span class="footer-badge-sub">UDYAM-WB-18-0186128</span>
         </span>
       </span>
-      <span class="footer-badge" onclick="navigateTo('compliance')" title="View GST Certificate">
+      <span class="footer-badge" onclick="openCertModal('gst')" title="View GST Certificate">
         <span class="footer-badge-icon">📋</span>
         <span>
           <span class="footer-badge-text-main">GST Registered</span>
@@ -1635,6 +1817,163 @@ footer {
   </footer>
 
 </div><!-- /boundary-container -->
+
+<!-- ══════════════════════════════════════════
+     CERTIFICATE MODAL POPUP (Premium)
+══════════════════════════════════════════ -->
+<div class="cert-modal-overlay" id="certModalOverlay" onclick="closeCertModal(event)">
+  <div class="cert-modal-box" role="dialog" aria-modal="true">
+
+    <!-- UDYAM CERTIFICATE PANEL -->
+    <div id="certPanelUdyam">
+      <div class="cert-modal-header">
+        <div>
+          <div class="cert-modal-title">Udyam Registration Certificate</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span class="cert-modal-badge">✓ Valid</span>
+          <button class="cert-modal-close" onclick="closeCertModal()" aria-label="Close">×</button>
+        </div>
+      </div>
+      <div class="cert-modal-body">
+        <div class="cert-modal-mock">
+          <div class="cert-modal-mock-header">
+            <div class="cert-modal-gov">Government of India · Ministry of MSME</div>
+            <div class="cert-modal-doc-title">UDYAM REGISTRATION CERTIFICATE</div>
+            <div class="cert-modal-gov" style="margin-top:4px;">e-MSME · msme.gov.in</div>
+          </div>
+          <div class="cert-modal-row">
+            <span class="cert-modal-label">Udyam Reg. No.</span>
+            <span class="cert-modal-val" style="font-weight:700;color:var(--river-indigo);">UDYAM-WB-18-0186128</span>
+          </div>
+          <div class="cert-modal-row">
+            <span class="cert-modal-label">Enterprise Name</span>
+            <span class="cert-modal-val">AuraScale / QuantumPixel</span>
+          </div>
+          <div class="cert-modal-row">
+            <span class="cert-modal-label">Type of Enterprise</span>
+            <span class="cert-modal-val">Micro Enterprise</span>
+          </div>
+          <div class="cert-modal-row">
+            <span class="cert-modal-label">Registration Date</span>
+            <span class="cert-modal-val">09/04/2026</span>
+          </div>
+          <div class="cert-modal-row">
+            <span class="cert-modal-label">State</span>
+            <span class="cert-modal-val">West Bengal</span>
+          </div>
+          <div class="cert-modal-row">
+            <span class="cert-modal-label">Mobile / Address</span>
+            <span class="cert-modal-blurred-block"></span>
+          </div>
+          <span class="cert-modal-blur-notice">⚠ Personal details redacted for privacy</span>
+        </div>
+        <div class="cert-modal-info-grid">
+          <div>
+            <div class="cert-modal-info-label">Trade Name</div>
+            <div class="cert-modal-info-value">AuraScale / QuantumPixel</div>
+          </div>
+          <div>
+            <div class="cert-modal-info-label">Proprietor</div>
+            <div class="cert-modal-info-value">Mousham Ahmed Laskar</div>
+          </div>
+          <div>
+            <div class="cert-modal-info-label">Registration No.</div>
+            <div class="cert-modal-info-value">UDYAM-WB-18-0186128</div>
+          </div>
+          <div>
+            <div class="cert-modal-info-label">Business Activity</div>
+            <div class="cert-modal-info-value">IT Services, Web Dev, Advertising</div>
+          </div>
+        </div>
+        <a href="https://udyamregistration.gov.in/verify" target="_blank" rel="noopener" class="cert-modal-verify-btn">
+          🔍 Verify on udyamregistration.gov.in →
+        </a>
+      </div>
+    </div>
+
+    <!-- GST CERTIFICATE PANEL -->
+    <div id="certPanelGst" style="display:none;">
+      <div class="cert-modal-header">
+        <div>
+          <div class="cert-modal-title">GST Registration Certificate</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span class="cert-modal-badge">✓ Valid</span>
+          <button class="cert-modal-close" onclick="closeCertModal()" aria-label="Close">×</button>
+        </div>
+      </div>
+      <div class="cert-modal-body">
+        <div class="cert-modal-mock">
+          <div class="cert-modal-mock-header">
+            <div class="cert-modal-gov">Government of India · Form GST REG-06</div>
+            <div class="cert-modal-doc-title">REGISTRATION CERTIFICATE</div>
+            <div class="cert-modal-gov" style="margin-top:4px;">Goods and Services Tax · gst.gov.in</div>
+          </div>
+          <div class="cert-modal-row">
+            <span class="cert-modal-label">GSTIN</span>
+            <span class="cert-modal-val" style="font-weight:700;color:#B93B2B;">19BDYPL9210K1ZR</span>
+          </div>
+          <div class="cert-modal-row">
+            <span class="cert-modal-label">Legal Name</span>
+            <span class="cert-modal-val">Mousham Ahmed Laskar</span>
+          </div>
+          <div class="cert-modal-row">
+            <span class="cert-modal-label">Trade Name</span>
+            <span class="cert-modal-val">AuraScale</span>
+          </div>
+          <div class="cert-modal-row">
+            <span class="cert-modal-label">Add. Trade Name</span>
+            <span class="cert-modal-val">QuantumPixel</span>
+          </div>
+          <div class="cert-modal-row">
+            <span class="cert-modal-label">Constitution</span>
+            <span class="cert-modal-val">Proprietorship</span>
+          </div>
+          <div class="cert-modal-row">
+            <span class="cert-modal-label">PAN (in GSTIN)</span>
+            <span class="cert-modal-val">19<span class="cert-modal-blurred">BDYPL9210K</span>1ZR</span>
+          </div>
+          <div class="cert-modal-row">
+            <span class="cert-modal-label">Date of Validity</span>
+            <span class="cert-modal-val">From 06/04/2026 · Not Applicable (Regular)</span>
+          </div>
+          <div class="cert-modal-row">
+            <span class="cert-modal-label">Home Address</span>
+            <span class="cert-modal-blurred-block"></span>
+          </div>
+          <div class="cert-modal-row">
+            <span class="cert-modal-label">Aadhaar / Signature</span>
+            <span class="cert-modal-blurred-block"></span>
+          </div>
+          <span class="cert-modal-blur-notice">⚠ PAN, address &amp; personal details redacted</span>
+        </div>
+        <div class="cert-modal-info-grid">
+          <div>
+            <div class="cert-modal-info-label">GSTIN</div>
+            <div class="cert-modal-info-value">19BDYPL9210K1ZR</div>
+          </div>
+          <div>
+            <div class="cert-modal-info-label">Registration Date</div>
+            <div class="cert-modal-info-value">07/05/2026</div>
+          </div>
+          <div>
+            <div class="cert-modal-info-label">Trade Name</div>
+            <div class="cert-modal-info-value">AuraScale / QuantumPixel</div>
+          </div>
+          <div>
+            <div class="cert-modal-info-label">Type</div>
+            <div class="cert-modal-info-value">Regular · West Bengal</div>
+          </div>
+        </div>
+        <a href="https://www.gst.gov.in/home/searchTaxpayerByGSTIN" target="_blank" rel="noopener" class="cert-modal-verify-btn">
+          🔍 Verify on gst.gov.in →
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
 
 <!-- WHATSAPP -->
 <a href="https://wa.me/918017465987" class="whatsapp-float" target="_blank" rel="noopener" title="Chat on WhatsApp">
@@ -1672,7 +2011,29 @@ footer {
     }, 100);
   }
 
-  // ── Form Submit ──
+  // ── Certificate Modal ──
+  function openCertModal(type) {
+    document.getElementById('certPanelUdyam').style.display = (type === 'udyam') ? 'block' : 'none';
+    document.getElementById('certPanelGst').style.display  = (type === 'gst')   ? 'block' : 'none';
+    const overlay = document.getElementById('certModalOverlay');
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeCertModal(e) {
+    if (e && e.target !== document.getElementById('certModalOverlay')) return;
+    const overlay = document.getElementById('certModalOverlay');
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  // Close on Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      document.getElementById('certModalOverlay').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  });
   function handleFormSubmit(e) {
     e.preventDefault();
     const btn = e.target.querySelector('.submit-btn');
