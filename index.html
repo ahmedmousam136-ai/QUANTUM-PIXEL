@@ -44,7 +44,29 @@ body::after {
 
 ::selection { background: var(--terracotta-red); color: var(--bg-canvas); }
 
-/* ── LANGUAGE LOGIC ── */
+/* ── FORM SUCCESS BANNER ── */
+.form-success-banner {
+  display: none;
+  align-items: center;
+  gap: 16px;
+  margin-top: 20px;
+  padding: 20px 28px;
+  background: var(--river-indigo);
+  color: var(--bg-canvas);
+  border: var(--border-thick);
+  box-shadow: 6px 6px 0px var(--taxi-mustard);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.form-success-banner.visible {
+  display: flex;
+}
+.form-success-icon {
+  font-size: 1.8rem;
+  color: var(--taxi-mustard);
+  flex-shrink: 0;
+}
+
 .lang-hi, .lang-en { display: none; }
 body.lang-bn-active .lang-hi, body.lang-bn-active .lang-en { display: none; }
 body.lang-bn-active .lang-bn { display: block; animation: stampedFade 0.4s ease; }
@@ -1199,6 +1221,9 @@ footer {
           <span class="lang-hi hi-text" style="font-size:18px;">हमारे साथ शुरुआत करें</span>
           <span class="lang-en en-text" style="font-size:18px;">Start Building</span>
         </a>
+        <!-- NOTE: The mailto: link above is intentional. Clicking it will open
+             the device's default email client (Gmail, Outlook, etc.) exactly
+             like the WhatsApp chat button opens WhatsApp. -->
       </div>
       <div class="hero-right">
         <div class="rajbari-arch">
@@ -1602,37 +1627,88 @@ footer {
         </div>
       </div>
 
-      <form class="contact-form" onsubmit="handleFormSubmit(event)">
+      <!--
+        FORMSPREE CONTACT FORM
+        ─────────────────────
+        Replace YOUR_FORM_ID below with the ID from your Formspree dashboard
+        (e.g. https://formspree.io/f/xpwzgkla → use xpwzgkla).
+        Sign up free at https://formspree.io and create a new form pointed
+        at ceo@kwantumpixel.in. No JavaScript needed — Formspree handles
+        delivery silently and redirects back to this page with ?submitted=true.
+      -->
+      <form
+        class="contact-form"
+        id="contact-form"
+      action="https://formspree.io/f/mgodboep"
+        method="POST"
+      >
+        <!-- Formspree will email replies to this address -->
+        <input type="hidden" name="_replyto" value="ceo@kwantumpixel.in">
+        <!-- Redirect back to this page after submission -->
+        <input type="hidden" name="_next" value=""><!-- leave blank = stays on page -->
+        <!-- Honeypot anti-spam field (hidden from real users) -->
+        <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+
         <div class="form-group">
-          <label class="form-label">
+          <label class="form-label" for="contact-name">
             <span class="lang-bn bn-text">আপনার নাম</span>
             <span class="lang-hi hi-text">आपका नाम</span>
             <span class="lang-en en-text">Your Name</span>
           </label>
-          <input type="text" class="form-input" placeholder="নাম লিখুন..." required>
+          <input
+            id="contact-name"
+            type="text"
+            name="name"
+            class="form-input"
+            placeholder="নাম লিখুন..."
+            required
+          >
         </div>
+
         <div class="form-group">
-          <label class="form-label">
+          <label class="form-label" for="contact-contact">
             <span class="lang-bn bn-text">ইমেইল বা ফোন</span>
             <span class="lang-hi hi-text">ईमेल या फ़ोन</span>
             <span class="lang-en en-text">Email or Phone</span>
           </label>
-          <input type="text" class="form-input" placeholder="যোগাযোগের তথ্য..." required>
+          <input
+            id="contact-contact"
+            type="text"
+            name="contact"
+            class="form-input"
+            placeholder="যোগাযোগের তথ্য..."
+            required
+          >
         </div>
+
         <div class="form-group">
-          <label class="form-label">
+          <label class="form-label" for="contact-message">
             <span class="lang-bn bn-text">আপনার বার্তা</span>
             <span class="lang-hi hi-text">आपका संदेश</span>
             <span class="lang-en en-text">Your Message</span>
           </label>
-          <textarea class="form-textarea" placeholder="আপনার প্রজেক্ট সম্পর্কে বলুন..."></textarea>
+          <textarea
+            id="contact-message"
+            name="message"
+            class="form-textarea"
+            placeholder="আপনার প্রজেক্ট সম্পর্কে বলুন..."
+          ></textarea>
         </div>
+
         <button type="submit" class="submit-btn">
           <span class="lang-bn bn-text">বার্তা পাঠান →</span>
           <span class="lang-hi hi-text">संदेश भेजें →</span>
           <span class="lang-en en-text">Send Message →</span>
         </button>
       </form>
+
+      <!-- Success banner: shown by CSS when URL contains ?submitted=true (Formspree default) -->
+      <div class="form-success-banner" id="form-success-banner" style="display:none;">
+        <span class="form-success-icon">✓</span>
+        <span class="lang-bn bn-text">আপনার বার্তা পাঠানো হয়েছে! আমরা শীঘ্রই যোগাযোগ করব।</span>
+        <span class="lang-hi hi-text">आपका संदेश भेज दिया गया! हम जल्द संपर्क करेंगे।</span>
+        <span class="lang-en en-text">Message sent! We'll be in touch soon.</span>
+      </div>
     </section>
 
   </div><!-- /page-home -->
@@ -1903,7 +1979,7 @@ footer {
       <span style="color:var(--taxi-mustard);font-family:'Space Grotesk',sans-serif;"> Pixel</span>
     </div>
 
-    <a href="mailto:ceo@kwantumpixel.in" class="footer-email-link" target="_self">ceo@kwantumpixel.in</a>
+    <a href="mailto:ceo@kwantumpixel.in" class="footer-email-link">ceo@kwantumpixel.in</a>
 
     <!-- COMPLIANCE BADGES IN FOOTER -->
     <div class="footer-badges">
@@ -2104,17 +2180,26 @@ footer {
       document.body.style.overflow = '';
     }
   });
+  // ── Formspree success detection ──
+  // Formspree redirects back with ?submitted=true after a successful POST.
+  // We detect that and show the success banner, then clean the URL.
+  (function() {
+    var params = new URLSearchParams(window.location.search);
+    if (params.get('submitted') === 'true') {
+      var banner = document.getElementById('form-success-banner');
+      var form   = document.getElementById('contact-form');
+      if (banner) { banner.style.display = 'flex'; }
+      if (form)   { form.style.display   = 'none'; }
+      // Clean the URL without reloading
+      history.replaceState(null, '', window.location.pathname + window.location.hash);
+    }
+  })();
+
+  // Keep handleFormSubmit as a no-op fallback (called by nothing now, but
+  // harmless if any old onclick references remain elsewhere in the page).
   function handleFormSubmit(e) {
-    e.preventDefault();
-    const btn = e.target.querySelector('.submit-btn');
-    const origText = btn.innerHTML;
-    btn.innerHTML = '✓ Sent! We\'ll be in touch.';
-    btn.style.background = 'var(--river-indigo)';
-    setTimeout(() => {
-      btn.innerHTML = origText;
-      btn.style.background = '';
-      e.target.reset();
-    }, 3000);
+    // Real submission is handled by Formspree via the form's action attribute.
+    // This function is intentionally left empty.
   }
 
   // ── Certificate Zoom ──
